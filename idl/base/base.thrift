@@ -1,4 +1,4 @@
-namespace go base
+namespace go sc_subscription_base
 
 struct TrafficEnv {
     1: bool Open = false,

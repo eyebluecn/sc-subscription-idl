@@ -1,5 +1,5 @@
 include "./subscription/subscription_api.thrift"
-namespace go sc_subscription_idl
+namespace go sc_subscription_api
 
 //定义subscription应用中的所有RPC服务
 service SubscriptionService {

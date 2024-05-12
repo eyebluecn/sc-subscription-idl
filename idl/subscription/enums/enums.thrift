@@ -1,4 +1,4 @@
-namespace go sc_subscription_idl
+namespace go sc_subscription_api
 
 //订阅状态
 enum SubscriptionStatus {

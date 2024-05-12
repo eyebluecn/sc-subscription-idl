@@ -1,5 +1,5 @@
 include "../enums/enums.thrift"
-namespace go sc_subscription_idl
+namespace go sc_subscription_api
 
 
 //订阅模型

@@ -1,4 +1,4 @@
-namespace go base
+namespace go sc_subscription_base
 
 //分页模型
 struct Pagination {

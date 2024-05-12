@@ -3,11 +3,11 @@ package subscriptionservice
 
 import (
 	server "github.com/cloudwego/kitex/server"
-	sc_subscription_idl "github.com/eyebluecn/sc-subscription-idl/kitex_gen/sc_subscription_idl"
+	sc_subscription_api "github.com/eyebluecn/sc-subscription-idl/kitex_gen/sc_subscription_api"
 )
 
 // NewServer creates a server.Server with the given handler and options.
-func NewServer(handler sc_subscription_idl.SubscriptionService, opts ...server.Option) server.Server {
+func NewServer(handler sc_subscription_api.SubscriptionService, opts ...server.Option) server.Server {
 	var options []server.Option
 
 	options = append(options, opts...)
@@ -20,6 +20,6 @@ func NewServer(handler sc_subscription_idl.SubscriptionService, opts ...server.O
 	return svr
 }
 
-func RegisterService(svr server.Server, handler sc_subscription_idl.SubscriptionService, opts ...server.RegisterOption) error {
+func RegisterService(svr server.Server, handler sc_subscription_api.SubscriptionService, opts ...server.RegisterOption) error {
 	return svr.RegisterService(serviceInfo(), handler, opts...)
 }

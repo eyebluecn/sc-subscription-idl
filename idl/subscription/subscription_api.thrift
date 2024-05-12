@@ -2,7 +2,7 @@ include "../base/base.thrift"
 include "../base/pagination.thrift"
 include "enums/enums.thrift"
 include "model/model.thrift"
-namespace go sc_subscription_idl
+namespace go sc_subscription_api
 
 //订阅列表 请求体
 struct SubscriptionListRequest {
