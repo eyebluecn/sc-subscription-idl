@@ -7,7 +7,7 @@ import (
 	"errors"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
-	subscription "github.com/eyebluecn/sc-subscription-idl/kitex_gen/smart/classroom/subscription"
+	sc_subscription_idl "github.com/eyebluecn/sc-subscription-idl/kitex_gen/sc_subscription_idl"
 )
 
 var errInvalidMessageType = errors.New("invalid message type for service method handler")
@@ -58,7 +58,7 @@ func NewServiceInfoForStreamClient() *kitex.ServiceInfo {
 
 func newServiceInfo(hasStreaming bool, keepStreamingMethods bool, keepNonStreamingMethods bool) *kitex.ServiceInfo {
 	serviceName := "SubscriptionService"
-	handlerType := (*subscription.SubscriptionService)(nil)
+	handlerType := (*sc_subscription_idl.SubscriptionService)(nil)
 	methods := map[string]kitex.MethodInfo{}
 	for name, m := range serviceMethods {
 		if m.IsStreaming() && !keepStreamingMethods {
@@ -70,7 +70,7 @@ func newServiceInfo(hasStreaming bool, keepStreamingMethods bool, keepNonStreami
 		methods[name] = m
 	}
 	extra := map[string]interface{}{
-		"PackageName": "subscription",
+		"PackageName": "sc_subscription_idl",
 	}
 	if hasStreaming {
 		extra["streaming"] = hasStreaming
@@ -87,9 +87,9 @@ func newServiceInfo(hasStreaming bool, keepStreamingMethods bool, keepNonStreami
 }
 
 func subscriptionListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*subscription.SubscriptionServiceSubscriptionListArgs)
-	realResult := result.(*subscription.SubscriptionServiceSubscriptionListResult)
-	success, err := handler.(subscription.SubscriptionService).SubscriptionList(ctx, realArg.Request)
+	realArg := arg.(*sc_subscription_idl.SubscriptionServiceSubscriptionListArgs)
+	realResult := result.(*sc_subscription_idl.SubscriptionServiceSubscriptionListResult)
+	success, err := handler.(sc_subscription_idl.SubscriptionService).SubscriptionList(ctx, realArg.Request)
 	if err != nil {
 		return err
 	}
@@ -97,11 +97,11 @@ func subscriptionListHandler(ctx context.Context, handler interface{}, arg, resu
 	return nil
 }
 func newSubscriptionServiceSubscriptionListArgs() interface{} {
-	return subscription.NewSubscriptionServiceSubscriptionListArgs()
+	return sc_subscription_idl.NewSubscriptionServiceSubscriptionListArgs()
 }
 
 func newSubscriptionServiceSubscriptionListResult() interface{} {
-	return subscription.NewSubscriptionServiceSubscriptionListResult()
+	return sc_subscription_idl.NewSubscriptionServiceSubscriptionListResult()
 }
 
 type kClient struct {
@@ -114,10 +114,10 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) SubscriptionList(ctx context.Context, request *subscription.SubscriptionListRequest) (r *subscription.SubscriptionListResponse, err error) {
-	var _args subscription.SubscriptionServiceSubscriptionListArgs
+func (p *kClient) SubscriptionList(ctx context.Context, request *sc_subscription_idl.SubscriptionListRequest) (r *sc_subscription_idl.SubscriptionListResponse, err error) {
+	var _args sc_subscription_idl.SubscriptionServiceSubscriptionListArgs
 	_args.Request = request
-	var _result subscription.SubscriptionServiceSubscriptionListResult
+	var _result sc_subscription_idl.SubscriptionServiceSubscriptionListResult
 	if err = p.c.Call(ctx, "SubscriptionList", &_args, &_result); err != nil {
 		return
 	}

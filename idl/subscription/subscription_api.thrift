@@ -2,7 +2,7 @@ include "../base/base.thrift"
 include "../base/pagination.thrift"
 include "enums/enums.thrift"
 include "model/model.thrift"
-namespace go smart.classroom.subscription
+namespace go sc_subscription_idl
 
 //订阅列表 请求体
 struct SubscriptionListRequest {

@@ -4,11 +4,11 @@ package subscriptionservice
 
 import (
 	server "github.com/cloudwego/kitex/server"
-	subscription "github.com/eyebluecn/sc-subscription-idl/kitex_gen/smart/classroom/subscription"
+	sc_subscription_idl "github.com/eyebluecn/sc-subscription-idl/kitex_gen/sc_subscription_idl"
 )
 
 // NewInvoker creates a server.Invoker with the given handler and options.
-func NewInvoker(handler subscription.SubscriptionService, opts ...server.Option) server.Invoker {
+func NewInvoker(handler sc_subscription_idl.SubscriptionService, opts ...server.Option) server.Invoker {
 	var options []server.Option
 
 	options = append(options, opts...)

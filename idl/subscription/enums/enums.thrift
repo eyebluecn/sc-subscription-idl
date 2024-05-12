@@ -1,4 +1,4 @@
-namespace go smart.classroom.subscription
+namespace go sc_subscription_idl
 
 //订阅状态
 enum SubscriptionStatus {

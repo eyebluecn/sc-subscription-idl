@@ -6,12 +6,12 @@ import (
 	"context"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
-	subscription "github.com/eyebluecn/sc-subscription-idl/kitex_gen/smart/classroom/subscription"
+	sc_subscription_idl "github.com/eyebluecn/sc-subscription-idl/kitex_gen/sc_subscription_idl"
 )
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	SubscriptionList(ctx context.Context, request *subscription.SubscriptionListRequest, callOptions ...callopt.Option) (r *subscription.SubscriptionListResponse, err error)
+	SubscriptionList(ctx context.Context, request *sc_subscription_idl.SubscriptionListRequest, callOptions ...callopt.Option) (r *sc_subscription_idl.SubscriptionListResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -43,7 +43,7 @@ type kSubscriptionServiceClient struct {
 	*kClient
 }
 
-func (p *kSubscriptionServiceClient) SubscriptionList(ctx context.Context, request *subscription.SubscriptionListRequest, callOptions ...callopt.Option) (r *subscription.SubscriptionListResponse, err error) {
+func (p *kSubscriptionServiceClient) SubscriptionList(ctx context.Context, request *sc_subscription_idl.SubscriptionListRequest, callOptions ...callopt.Option) (r *sc_subscription_idl.SubscriptionListResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.SubscriptionList(ctx, request)
 }
