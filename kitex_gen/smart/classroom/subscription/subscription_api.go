@@ -14,7 +14,7 @@ type SubscriptionListRequest struct {
 	ReaderId *int64     `thrift:"readerId,3,optional" frugal:"3,optional,i64" json:"readerId,omitempty"`
 	ColumnId *int64     `thrift:"columnId,4,optional" frugal:"4,optional,i64" json:"columnId,omitempty"`
 	OrderId  *int64     `thrift:"orderId,5,optional" frugal:"5,optional,i64" json:"orderId,omitempty"`
-	Status   *int64     `thrift:"status,6,optional" frugal:"6,optional,i64" json:"status,omitempty"`
+	Status   *int32     `thrift:"status,6,optional" frugal:"6,optional,i32" json:"status,omitempty"`
 	Base     *base.Base `thrift:"base,255,optional" frugal:"255,optional,base.Base" json:"base,omitempty"`
 }
 
@@ -61,9 +61,9 @@ func (p *SubscriptionListRequest) GetOrderId() (v int64) {
 	return *p.OrderId
 }
 
-var SubscriptionListRequest_Status_DEFAULT int64
+var SubscriptionListRequest_Status_DEFAULT int32
 
-func (p *SubscriptionListRequest) GetStatus() (v int64) {
+func (p *SubscriptionListRequest) GetStatus() (v int32) {
 	if !p.IsSetStatus() {
 		return SubscriptionListRequest_Status_DEFAULT
 	}
@@ -93,7 +93,7 @@ func (p *SubscriptionListRequest) SetColumnId(val *int64) {
 func (p *SubscriptionListRequest) SetOrderId(val *int64) {
 	p.OrderId = val
 }
-func (p *SubscriptionListRequest) SetStatus(val *int64) {
+func (p *SubscriptionListRequest) SetStatus(val *int32) {
 	p.Status = val
 }
 func (p *SubscriptionListRequest) SetBase(val *base.Base) {
@@ -190,7 +190,7 @@ func (p *SubscriptionListRequest) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 6:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.I32 {
 				if err = p.ReadField6(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -291,8 +291,8 @@ func (p *SubscriptionListRequest) ReadField5(iprot thrift.TProtocol) error {
 }
 func (p *SubscriptionListRequest) ReadField6(iprot thrift.TProtocol) error {
 
-	var _field *int64
-	if v, err := iprot.ReadI64(); err != nil {
+	var _field *int32
+	if v, err := iprot.ReadI32(); err != nil {
 		return err
 	} else {
 		_field = &v
@@ -454,10 +454,10 @@ WriteFieldEndError:
 
 func (p *SubscriptionListRequest) writeField6(oprot thrift.TProtocol) (err error) {
 	if p.IsSetStatus() {
-		if err = oprot.WriteFieldBegin("status", thrift.I64, 6); err != nil {
+		if err = oprot.WriteFieldBegin("status", thrift.I32, 6); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteI64(*p.Status); err != nil {
+		if err := oprot.WriteI32(*p.Status); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -578,7 +578,7 @@ func (p *SubscriptionListRequest) Field5DeepEqual(src *int64) bool {
 	}
 	return true
 }
-func (p *SubscriptionListRequest) Field6DeepEqual(src *int64) bool {
+func (p *SubscriptionListRequest) Field6DeepEqual(src *int32) bool {
 
 	if p.Status == src {
 		return true

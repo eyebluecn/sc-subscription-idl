@@ -11,7 +11,7 @@ struct SubscriptionListRequest {
 	3: optional i64 readerId //读者id
 	4: optional i64 columnId //专栏id
 	5: optional i64 orderId //订单id
-	6: optional i64 status //状态
+	6: optional i32 status //状态
 
 	255: optional base.Base base //标准请求内容
 }

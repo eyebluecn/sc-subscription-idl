@@ -119,7 +119,7 @@ func (p *SubscriptionListRequest) FastRead(buf []byte) (int, error) {
 				}
 			}
 		case 6:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.I32 {
 				l, err = p.FastReadField6(buf[offset:])
 				offset += l
 				if err != nil {
@@ -251,7 +251,7 @@ func (p *SubscriptionListRequest) FastReadField5(buf []byte) (int, error) {
 func (p *SubscriptionListRequest) FastReadField6(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
+	if v, l, err := bthrift.Binary.ReadI32(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
@@ -367,8 +367,8 @@ func (p *SubscriptionListRequest) fastWriteField5(buf []byte, binaryWriter bthri
 func (p *SubscriptionListRequest) fastWriteField6(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	if p.IsSetStatus() {
-		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "status", thrift.I64, 6)
-		offset += bthrift.Binary.WriteI64(buf[offset:], *p.Status)
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "status", thrift.I32, 6)
+		offset += bthrift.Binary.WriteI32(buf[offset:], *p.Status)
 
 		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	}
@@ -439,8 +439,8 @@ func (p *SubscriptionListRequest) field5Length() int {
 func (p *SubscriptionListRequest) field6Length() int {
 	l := 0
 	if p.IsSetStatus() {
-		l += bthrift.Binary.FieldBeginLength("status", thrift.I64, 6)
-		l += bthrift.Binary.I64Length(*p.Status)
+		l += bthrift.Binary.FieldBeginLength("status", thrift.I32, 6)
+		l += bthrift.Binary.I32Length(*p.Status)
 
 		l += bthrift.Binary.FieldEndLength()
 	}
