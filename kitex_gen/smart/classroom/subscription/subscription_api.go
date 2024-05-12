@@ -11,10 +11,10 @@ import (
 type SubscriptionListRequest struct {
 	PageNum  int64      `thrift:"pageNum,1" frugal:"1,default,i64" json:"pageNum"`
 	PageSize int64      `thrift:"pageSize,2" frugal:"2,default,i64" json:"pageSize"`
-	ReaderId int64      `thrift:"readerId,3" frugal:"3,default,i64" json:"readerId"`
-	ColumnId int64      `thrift:"columnId,4" frugal:"4,default,i64" json:"columnId"`
-	OrderId  int64      `thrift:"orderId,5" frugal:"5,default,i64" json:"orderId"`
-	Status   int64      `thrift:"status,6" frugal:"6,default,i64" json:"status"`
+	ReaderId *int64     `thrift:"readerId,3,optional" frugal:"3,optional,i64" json:"readerId,omitempty"`
+	ColumnId *int64     `thrift:"columnId,4,optional" frugal:"4,optional,i64" json:"columnId,omitempty"`
+	OrderId  *int64     `thrift:"orderId,5,optional" frugal:"5,optional,i64" json:"orderId,omitempty"`
+	Status   *int64     `thrift:"status,6,optional" frugal:"6,optional,i64" json:"status,omitempty"`
 	Base     *base.Base `thrift:"base,255,optional" frugal:"255,optional,base.Base" json:"base,omitempty"`
 }
 
@@ -34,20 +34,40 @@ func (p *SubscriptionListRequest) GetPageSize() (v int64) {
 	return p.PageSize
 }
 
+var SubscriptionListRequest_ReaderId_DEFAULT int64
+
 func (p *SubscriptionListRequest) GetReaderId() (v int64) {
-	return p.ReaderId
+	if !p.IsSetReaderId() {
+		return SubscriptionListRequest_ReaderId_DEFAULT
+	}
+	return *p.ReaderId
 }
+
+var SubscriptionListRequest_ColumnId_DEFAULT int64
 
 func (p *SubscriptionListRequest) GetColumnId() (v int64) {
-	return p.ColumnId
+	if !p.IsSetColumnId() {
+		return SubscriptionListRequest_ColumnId_DEFAULT
+	}
+	return *p.ColumnId
 }
+
+var SubscriptionListRequest_OrderId_DEFAULT int64
 
 func (p *SubscriptionListRequest) GetOrderId() (v int64) {
-	return p.OrderId
+	if !p.IsSetOrderId() {
+		return SubscriptionListRequest_OrderId_DEFAULT
+	}
+	return *p.OrderId
 }
 
+var SubscriptionListRequest_Status_DEFAULT int64
+
 func (p *SubscriptionListRequest) GetStatus() (v int64) {
-	return p.Status
+	if !p.IsSetStatus() {
+		return SubscriptionListRequest_Status_DEFAULT
+	}
+	return *p.Status
 }
 
 var SubscriptionListRequest_Base_DEFAULT *base.Base
@@ -64,16 +84,16 @@ func (p *SubscriptionListRequest) SetPageNum(val int64) {
 func (p *SubscriptionListRequest) SetPageSize(val int64) {
 	p.PageSize = val
 }
-func (p *SubscriptionListRequest) SetReaderId(val int64) {
+func (p *SubscriptionListRequest) SetReaderId(val *int64) {
 	p.ReaderId = val
 }
-func (p *SubscriptionListRequest) SetColumnId(val int64) {
+func (p *SubscriptionListRequest) SetColumnId(val *int64) {
 	p.ColumnId = val
 }
-func (p *SubscriptionListRequest) SetOrderId(val int64) {
+func (p *SubscriptionListRequest) SetOrderId(val *int64) {
 	p.OrderId = val
 }
-func (p *SubscriptionListRequest) SetStatus(val int64) {
+func (p *SubscriptionListRequest) SetStatus(val *int64) {
 	p.Status = val
 }
 func (p *SubscriptionListRequest) SetBase(val *base.Base) {
@@ -88,6 +108,22 @@ var fieldIDToName_SubscriptionListRequest = map[int16]string{
 	5:   "orderId",
 	6:   "status",
 	255: "base",
+}
+
+func (p *SubscriptionListRequest) IsSetReaderId() bool {
+	return p.ReaderId != nil
+}
+
+func (p *SubscriptionListRequest) IsSetColumnId() bool {
+	return p.ColumnId != nil
+}
+
+func (p *SubscriptionListRequest) IsSetOrderId() bool {
+	return p.OrderId != nil
+}
+
+func (p *SubscriptionListRequest) IsSetStatus() bool {
+	return p.Status != nil
 }
 
 func (p *SubscriptionListRequest) IsSetBase() bool {
@@ -222,44 +258,44 @@ func (p *SubscriptionListRequest) ReadField2(iprot thrift.TProtocol) error {
 }
 func (p *SubscriptionListRequest) ReadField3(iprot thrift.TProtocol) error {
 
-	var _field int64
+	var _field *int64
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		_field = v
+		_field = &v
 	}
 	p.ReaderId = _field
 	return nil
 }
 func (p *SubscriptionListRequest) ReadField4(iprot thrift.TProtocol) error {
 
-	var _field int64
+	var _field *int64
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		_field = v
+		_field = &v
 	}
 	p.ColumnId = _field
 	return nil
 }
 func (p *SubscriptionListRequest) ReadField5(iprot thrift.TProtocol) error {
 
-	var _field int64
+	var _field *int64
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		_field = v
+		_field = &v
 	}
 	p.OrderId = _field
 	return nil
 }
 func (p *SubscriptionListRequest) ReadField6(iprot thrift.TProtocol) error {
 
-	var _field int64
+	var _field *int64
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		_field = v
+		_field = &v
 	}
 	p.Status = _field
 	return nil
@@ -360,14 +396,16 @@ WriteFieldEndError:
 }
 
 func (p *SubscriptionListRequest) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("readerId", thrift.I64, 3); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.ReaderId); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+	if p.IsSetReaderId() {
+		if err = oprot.WriteFieldBegin("readerId", thrift.I64, 3); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(*p.ReaderId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -377,14 +415,16 @@ WriteFieldEndError:
 }
 
 func (p *SubscriptionListRequest) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("columnId", thrift.I64, 4); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.ColumnId); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+	if p.IsSetColumnId() {
+		if err = oprot.WriteFieldBegin("columnId", thrift.I64, 4); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(*p.ColumnId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -394,14 +434,16 @@ WriteFieldEndError:
 }
 
 func (p *SubscriptionListRequest) writeField5(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("orderId", thrift.I64, 5); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.OrderId); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+	if p.IsSetOrderId() {
+		if err = oprot.WriteFieldBegin("orderId", thrift.I64, 5); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(*p.OrderId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -411,14 +453,16 @@ WriteFieldEndError:
 }
 
 func (p *SubscriptionListRequest) writeField6(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("status", thrift.I64, 6); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.Status); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+	if p.IsSetStatus() {
+		if err = oprot.WriteFieldBegin("status", thrift.I64, 6); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(*p.Status); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -498,30 +542,50 @@ func (p *SubscriptionListRequest) Field2DeepEqual(src int64) bool {
 	}
 	return true
 }
-func (p *SubscriptionListRequest) Field3DeepEqual(src int64) bool {
+func (p *SubscriptionListRequest) Field3DeepEqual(src *int64) bool {
 
-	if p.ReaderId != src {
+	if p.ReaderId == src {
+		return true
+	} else if p.ReaderId == nil || src == nil {
+		return false
+	}
+	if *p.ReaderId != *src {
 		return false
 	}
 	return true
 }
-func (p *SubscriptionListRequest) Field4DeepEqual(src int64) bool {
+func (p *SubscriptionListRequest) Field4DeepEqual(src *int64) bool {
 
-	if p.ColumnId != src {
+	if p.ColumnId == src {
+		return true
+	} else if p.ColumnId == nil || src == nil {
+		return false
+	}
+	if *p.ColumnId != *src {
 		return false
 	}
 	return true
 }
-func (p *SubscriptionListRequest) Field5DeepEqual(src int64) bool {
+func (p *SubscriptionListRequest) Field5DeepEqual(src *int64) bool {
 
-	if p.OrderId != src {
+	if p.OrderId == src {
+		return true
+	} else if p.OrderId == nil || src == nil {
+		return false
+	}
+	if *p.OrderId != *src {
 		return false
 	}
 	return true
 }
-func (p *SubscriptionListRequest) Field6DeepEqual(src int64) bool {
+func (p *SubscriptionListRequest) Field6DeepEqual(src *int64) bool {
 
-	if p.Status != src {
+	if p.Status == src {
+		return true
+	} else if p.Status == nil || src == nil {
+		return false
+	}
+	if *p.Status != *src {
 		return false
 	}
 	return true

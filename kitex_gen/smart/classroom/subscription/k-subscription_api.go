@@ -216,8 +216,7 @@ func (p *SubscriptionListRequest) FastReadField3(buf []byte) (int, error) {
 		return offset, err
 	} else {
 		offset += l
-
-		p.ReaderId = v
+		p.ReaderId = &v
 
 	}
 	return offset, nil
@@ -230,8 +229,7 @@ func (p *SubscriptionListRequest) FastReadField4(buf []byte) (int, error) {
 		return offset, err
 	} else {
 		offset += l
-
-		p.ColumnId = v
+		p.ColumnId = &v
 
 	}
 	return offset, nil
@@ -244,8 +242,7 @@ func (p *SubscriptionListRequest) FastReadField5(buf []byte) (int, error) {
 		return offset, err
 	} else {
 		offset += l
-
-		p.OrderId = v
+		p.OrderId = &v
 
 	}
 	return offset, nil
@@ -258,8 +255,7 @@ func (p *SubscriptionListRequest) FastReadField6(buf []byte) (int, error) {
 		return offset, err
 	} else {
 		offset += l
-
-		p.Status = v
+		p.Status = &v
 
 	}
 	return offset, nil
@@ -337,37 +333,45 @@ func (p *SubscriptionListRequest) fastWriteField2(buf []byte, binaryWriter bthri
 
 func (p *SubscriptionListRequest) fastWriteField3(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "readerId", thrift.I64, 3)
-	offset += bthrift.Binary.WriteI64(buf[offset:], p.ReaderId)
+	if p.IsSetReaderId() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "readerId", thrift.I64, 3)
+		offset += bthrift.Binary.WriteI64(buf[offset:], *p.ReaderId)
 
-	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	}
 	return offset
 }
 
 func (p *SubscriptionListRequest) fastWriteField4(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "columnId", thrift.I64, 4)
-	offset += bthrift.Binary.WriteI64(buf[offset:], p.ColumnId)
+	if p.IsSetColumnId() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "columnId", thrift.I64, 4)
+		offset += bthrift.Binary.WriteI64(buf[offset:], *p.ColumnId)
 
-	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	}
 	return offset
 }
 
 func (p *SubscriptionListRequest) fastWriteField5(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "orderId", thrift.I64, 5)
-	offset += bthrift.Binary.WriteI64(buf[offset:], p.OrderId)
+	if p.IsSetOrderId() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "orderId", thrift.I64, 5)
+		offset += bthrift.Binary.WriteI64(buf[offset:], *p.OrderId)
 
-	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	}
 	return offset
 }
 
 func (p *SubscriptionListRequest) fastWriteField6(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "status", thrift.I64, 6)
-	offset += bthrift.Binary.WriteI64(buf[offset:], p.Status)
+	if p.IsSetStatus() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "status", thrift.I64, 6)
+		offset += bthrift.Binary.WriteI64(buf[offset:], *p.Status)
 
-	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	}
 	return offset
 }
 
@@ -401,37 +405,45 @@ func (p *SubscriptionListRequest) field2Length() int {
 
 func (p *SubscriptionListRequest) field3Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("readerId", thrift.I64, 3)
-	l += bthrift.Binary.I64Length(p.ReaderId)
+	if p.IsSetReaderId() {
+		l += bthrift.Binary.FieldBeginLength("readerId", thrift.I64, 3)
+		l += bthrift.Binary.I64Length(*p.ReaderId)
 
-	l += bthrift.Binary.FieldEndLength()
+		l += bthrift.Binary.FieldEndLength()
+	}
 	return l
 }
 
 func (p *SubscriptionListRequest) field4Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("columnId", thrift.I64, 4)
-	l += bthrift.Binary.I64Length(p.ColumnId)
+	if p.IsSetColumnId() {
+		l += bthrift.Binary.FieldBeginLength("columnId", thrift.I64, 4)
+		l += bthrift.Binary.I64Length(*p.ColumnId)
 
-	l += bthrift.Binary.FieldEndLength()
+		l += bthrift.Binary.FieldEndLength()
+	}
 	return l
 }
 
 func (p *SubscriptionListRequest) field5Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("orderId", thrift.I64, 5)
-	l += bthrift.Binary.I64Length(p.OrderId)
+	if p.IsSetOrderId() {
+		l += bthrift.Binary.FieldBeginLength("orderId", thrift.I64, 5)
+		l += bthrift.Binary.I64Length(*p.OrderId)
 
-	l += bthrift.Binary.FieldEndLength()
+		l += bthrift.Binary.FieldEndLength()
+	}
 	return l
 }
 
 func (p *SubscriptionListRequest) field6Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("status", thrift.I64, 6)
-	l += bthrift.Binary.I64Length(p.Status)
+	if p.IsSetStatus() {
+		l += bthrift.Binary.FieldBeginLength("status", thrift.I64, 6)
+		l += bthrift.Binary.I64Length(*p.Status)
 
-	l += bthrift.Binary.FieldEndLength()
+		l += bthrift.Binary.FieldEndLength()
+	}
 	return l
 }
 
