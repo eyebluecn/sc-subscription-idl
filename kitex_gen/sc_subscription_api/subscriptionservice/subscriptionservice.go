@@ -13,10 +13,10 @@ import (
 var errInvalidMessageType = errors.New("invalid message type for service method handler")
 
 var serviceMethods = map[string]kitex.MethodInfo{
-	"SubscriptionList": kitex.NewMethodInfo(
-		subscriptionListHandler,
-		newSubscriptionServiceSubscriptionListArgs,
-		newSubscriptionServiceSubscriptionListResult,
+	"SubscriptionPage": kitex.NewMethodInfo(
+		subscriptionPageHandler,
+		newSubscriptionServiceSubscriptionPageArgs,
+		newSubscriptionServiceSubscriptionPageResult,
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
@@ -86,22 +86,22 @@ func newServiceInfo(hasStreaming bool, keepStreamingMethods bool, keepNonStreami
 	return svcInfo
 }
 
-func subscriptionListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*sc_subscription_api.SubscriptionServiceSubscriptionListArgs)
-	realResult := result.(*sc_subscription_api.SubscriptionServiceSubscriptionListResult)
-	success, err := handler.(sc_subscription_api.SubscriptionService).SubscriptionList(ctx, realArg.Request)
+func subscriptionPageHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*sc_subscription_api.SubscriptionServiceSubscriptionPageArgs)
+	realResult := result.(*sc_subscription_api.SubscriptionServiceSubscriptionPageResult)
+	success, err := handler.(sc_subscription_api.SubscriptionService).SubscriptionPage(ctx, realArg.Request)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newSubscriptionServiceSubscriptionListArgs() interface{} {
-	return sc_subscription_api.NewSubscriptionServiceSubscriptionListArgs()
+func newSubscriptionServiceSubscriptionPageArgs() interface{} {
+	return sc_subscription_api.NewSubscriptionServiceSubscriptionPageArgs()
 }
 
-func newSubscriptionServiceSubscriptionListResult() interface{} {
-	return sc_subscription_api.NewSubscriptionServiceSubscriptionListResult()
+func newSubscriptionServiceSubscriptionPageResult() interface{} {
+	return sc_subscription_api.NewSubscriptionServiceSubscriptionPageResult()
 }
 
 type kClient struct {
@@ -114,11 +114,11 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) SubscriptionList(ctx context.Context, request *sc_subscription_api.SubscriptionListRequest) (r *sc_subscription_api.SubscriptionListResponse, err error) {
-	var _args sc_subscription_api.SubscriptionServiceSubscriptionListArgs
+func (p *kClient) SubscriptionPage(ctx context.Context, request *sc_subscription_api.SubscriptionPageRequest) (r *sc_subscription_api.SubscriptionPageResponse, err error) {
+	var _args sc_subscription_api.SubscriptionServiceSubscriptionPageArgs
 	_args.Request = request
-	var _result sc_subscription_api.SubscriptionServiceSubscriptionListResult
-	if err = p.c.Call(ctx, "SubscriptionList", &_args, &_result); err != nil {
+	var _result sc_subscription_api.SubscriptionServiceSubscriptionPageResult
+	if err = p.c.Call(ctx, "SubscriptionPage", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

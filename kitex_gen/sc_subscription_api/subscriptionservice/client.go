@@ -11,7 +11,7 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	SubscriptionList(ctx context.Context, request *sc_subscription_api.SubscriptionListRequest, callOptions ...callopt.Option) (r *sc_subscription_api.SubscriptionListResponse, err error)
+	SubscriptionPage(ctx context.Context, request *sc_subscription_api.SubscriptionPageRequest, callOptions ...callopt.Option) (r *sc_subscription_api.SubscriptionPageResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -43,7 +43,7 @@ type kSubscriptionServiceClient struct {
 	*kClient
 }
 
-func (p *kSubscriptionServiceClient) SubscriptionList(ctx context.Context, request *sc_subscription_api.SubscriptionListRequest, callOptions ...callopt.Option) (r *sc_subscription_api.SubscriptionListResponse, err error) {
+func (p *kSubscriptionServiceClient) SubscriptionPage(ctx context.Context, request *sc_subscription_api.SubscriptionPageRequest, callOptions ...callopt.Option) (r *sc_subscription_api.SubscriptionPageResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.SubscriptionList(ctx, request)
+	return p.kClient.SubscriptionPage(ctx, request)
 }

@@ -5,6 +5,6 @@ namespace go sc_subscription_api
 service SubscriptionService {
 
     //查询订阅列表
-    subscription_api.SubscriptionListResponse SubscriptionList(1: subscription_api.SubscriptionListRequest request)
+    subscription_api.SubscriptionPageResponse SubscriptionPage(1: subscription_api.SubscriptionPageRequest request)
 
 }

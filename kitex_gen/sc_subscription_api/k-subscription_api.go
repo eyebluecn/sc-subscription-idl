@@ -26,7 +26,7 @@ var (
 	_ = sc_subscription_base.KitexUnusedProtection
 )
 
-func (p *SubscriptionListRequest) FastRead(buf []byte) (int, error) {
+func (p *SubscriptionPageRequest) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
 	var l int
@@ -172,7 +172,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SubscriptionListRequest[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SubscriptionPageRequest[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
@@ -181,7 +181,7 @@ ReadStructEndError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *SubscriptionListRequest) FastReadField1(buf []byte) (int, error) {
+func (p *SubscriptionPageRequest) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
 	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
@@ -195,7 +195,7 @@ func (p *SubscriptionListRequest) FastReadField1(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *SubscriptionListRequest) FastReadField2(buf []byte) (int, error) {
+func (p *SubscriptionPageRequest) FastReadField2(buf []byte) (int, error) {
 	offset := 0
 
 	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
@@ -209,7 +209,7 @@ func (p *SubscriptionListRequest) FastReadField2(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *SubscriptionListRequest) FastReadField3(buf []byte) (int, error) {
+func (p *SubscriptionPageRequest) FastReadField3(buf []byte) (int, error) {
 	offset := 0
 
 	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
@@ -222,7 +222,7 @@ func (p *SubscriptionListRequest) FastReadField3(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *SubscriptionListRequest) FastReadField4(buf []byte) (int, error) {
+func (p *SubscriptionPageRequest) FastReadField4(buf []byte) (int, error) {
 	offset := 0
 
 	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
@@ -235,7 +235,7 @@ func (p *SubscriptionListRequest) FastReadField4(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *SubscriptionListRequest) FastReadField5(buf []byte) (int, error) {
+func (p *SubscriptionPageRequest) FastReadField5(buf []byte) (int, error) {
 	offset := 0
 
 	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
@@ -248,7 +248,7 @@ func (p *SubscriptionListRequest) FastReadField5(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *SubscriptionListRequest) FastReadField6(buf []byte) (int, error) {
+func (p *SubscriptionPageRequest) FastReadField6(buf []byte) (int, error) {
 	offset := 0
 
 	if v, l, err := bthrift.Binary.ReadI32(buf[offset:]); err != nil {
@@ -261,7 +261,7 @@ func (p *SubscriptionListRequest) FastReadField6(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *SubscriptionListRequest) FastReadField255(buf []byte) (int, error) {
+func (p *SubscriptionPageRequest) FastReadField255(buf []byte) (int, error) {
 	offset := 0
 
 	tmp := sc_subscription_base.NewBase()
@@ -275,13 +275,13 @@ func (p *SubscriptionListRequest) FastReadField255(buf []byte) (int, error) {
 }
 
 // for compatibility
-func (p *SubscriptionListRequest) FastWrite(buf []byte) int {
+func (p *SubscriptionPageRequest) FastWrite(buf []byte) int {
 	return 0
 }
 
-func (p *SubscriptionListRequest) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *SubscriptionPageRequest) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "SubscriptionListRequest")
+	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "SubscriptionPageRequest")
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
 		offset += p.fastWriteField2(buf[offset:], binaryWriter)
@@ -296,9 +296,9 @@ func (p *SubscriptionListRequest) FastWriteNocopy(buf []byte, binaryWriter bthri
 	return offset
 }
 
-func (p *SubscriptionListRequest) BLength() int {
+func (p *SubscriptionPageRequest) BLength() int {
 	l := 0
-	l += bthrift.Binary.StructBeginLength("SubscriptionListRequest")
+	l += bthrift.Binary.StructBeginLength("SubscriptionPageRequest")
 	if p != nil {
 		l += p.field1Length()
 		l += p.field2Length()
@@ -313,7 +313,7 @@ func (p *SubscriptionListRequest) BLength() int {
 	return l
 }
 
-func (p *SubscriptionListRequest) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *SubscriptionPageRequest) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "pageNum", thrift.I64, 1)
 	offset += bthrift.Binary.WriteI64(buf[offset:], p.PageNum)
@@ -322,7 +322,7 @@ func (p *SubscriptionListRequest) fastWriteField1(buf []byte, binaryWriter bthri
 	return offset
 }
 
-func (p *SubscriptionListRequest) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *SubscriptionPageRequest) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "pageSize", thrift.I64, 2)
 	offset += bthrift.Binary.WriteI64(buf[offset:], p.PageSize)
@@ -331,7 +331,7 @@ func (p *SubscriptionListRequest) fastWriteField2(buf []byte, binaryWriter bthri
 	return offset
 }
 
-func (p *SubscriptionListRequest) fastWriteField3(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *SubscriptionPageRequest) fastWriteField3(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	if p.IsSetReaderId() {
 		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "readerId", thrift.I64, 3)
@@ -342,7 +342,7 @@ func (p *SubscriptionListRequest) fastWriteField3(buf []byte, binaryWriter bthri
 	return offset
 }
 
-func (p *SubscriptionListRequest) fastWriteField4(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *SubscriptionPageRequest) fastWriteField4(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	if p.IsSetColumnId() {
 		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "columnId", thrift.I64, 4)
@@ -353,7 +353,7 @@ func (p *SubscriptionListRequest) fastWriteField4(buf []byte, binaryWriter bthri
 	return offset
 }
 
-func (p *SubscriptionListRequest) fastWriteField5(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *SubscriptionPageRequest) fastWriteField5(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	if p.IsSetOrderId() {
 		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "orderId", thrift.I64, 5)
@@ -364,7 +364,7 @@ func (p *SubscriptionListRequest) fastWriteField5(buf []byte, binaryWriter bthri
 	return offset
 }
 
-func (p *SubscriptionListRequest) fastWriteField6(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *SubscriptionPageRequest) fastWriteField6(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	if p.IsSetStatus() {
 		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "status", thrift.I32, 6)
@@ -375,7 +375,7 @@ func (p *SubscriptionListRequest) fastWriteField6(buf []byte, binaryWriter bthri
 	return offset
 }
 
-func (p *SubscriptionListRequest) fastWriteField255(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *SubscriptionPageRequest) fastWriteField255(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	if p.IsSetBase() {
 		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "base", thrift.STRUCT, 255)
@@ -385,7 +385,7 @@ func (p *SubscriptionListRequest) fastWriteField255(buf []byte, binaryWriter bth
 	return offset
 }
 
-func (p *SubscriptionListRequest) field1Length() int {
+func (p *SubscriptionPageRequest) field1Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("pageNum", thrift.I64, 1)
 	l += bthrift.Binary.I64Length(p.PageNum)
@@ -394,7 +394,7 @@ func (p *SubscriptionListRequest) field1Length() int {
 	return l
 }
 
-func (p *SubscriptionListRequest) field2Length() int {
+func (p *SubscriptionPageRequest) field2Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("pageSize", thrift.I64, 2)
 	l += bthrift.Binary.I64Length(p.PageSize)
@@ -403,7 +403,7 @@ func (p *SubscriptionListRequest) field2Length() int {
 	return l
 }
 
-func (p *SubscriptionListRequest) field3Length() int {
+func (p *SubscriptionPageRequest) field3Length() int {
 	l := 0
 	if p.IsSetReaderId() {
 		l += bthrift.Binary.FieldBeginLength("readerId", thrift.I64, 3)
@@ -414,7 +414,7 @@ func (p *SubscriptionListRequest) field3Length() int {
 	return l
 }
 
-func (p *SubscriptionListRequest) field4Length() int {
+func (p *SubscriptionPageRequest) field4Length() int {
 	l := 0
 	if p.IsSetColumnId() {
 		l += bthrift.Binary.FieldBeginLength("columnId", thrift.I64, 4)
@@ -425,7 +425,7 @@ func (p *SubscriptionListRequest) field4Length() int {
 	return l
 }
 
-func (p *SubscriptionListRequest) field5Length() int {
+func (p *SubscriptionPageRequest) field5Length() int {
 	l := 0
 	if p.IsSetOrderId() {
 		l += bthrift.Binary.FieldBeginLength("orderId", thrift.I64, 5)
@@ -436,7 +436,7 @@ func (p *SubscriptionListRequest) field5Length() int {
 	return l
 }
 
-func (p *SubscriptionListRequest) field6Length() int {
+func (p *SubscriptionPageRequest) field6Length() int {
 	l := 0
 	if p.IsSetStatus() {
 		l += bthrift.Binary.FieldBeginLength("status", thrift.I32, 6)
@@ -447,7 +447,7 @@ func (p *SubscriptionListRequest) field6Length() int {
 	return l
 }
 
-func (p *SubscriptionListRequest) field255Length() int {
+func (p *SubscriptionPageRequest) field255Length() int {
 	l := 0
 	if p.IsSetBase() {
 		l += bthrift.Binary.FieldBeginLength("base", thrift.STRUCT, 255)
@@ -457,7 +457,7 @@ func (p *SubscriptionListRequest) field255Length() int {
 	return l
 }
 
-func (p *SubscriptionListResponse) FastRead(buf []byte) (int, error) {
+func (p *SubscriptionPageResponse) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
 	var l int
@@ -547,7 +547,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SubscriptionListResponse[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SubscriptionPageResponse[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
@@ -556,7 +556,7 @@ ReadStructEndError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *SubscriptionListResponse) FastReadField1(buf []byte) (int, error) {
+func (p *SubscriptionPageResponse) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
 	_, size, l, err := bthrift.Binary.ReadListBegin(buf[offset:])
@@ -583,7 +583,7 @@ func (p *SubscriptionListResponse) FastReadField1(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *SubscriptionListResponse) FastReadField2(buf []byte) (int, error) {
+func (p *SubscriptionPageResponse) FastReadField2(buf []byte) (int, error) {
 	offset := 0
 
 	tmp := sc_subscription_base.NewPagination()
@@ -596,7 +596,7 @@ func (p *SubscriptionListResponse) FastReadField2(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *SubscriptionListResponse) FastReadField255(buf []byte) (int, error) {
+func (p *SubscriptionPageResponse) FastReadField255(buf []byte) (int, error) {
 	offset := 0
 
 	tmp := sc_subscription_base.NewBaseResp()
@@ -610,13 +610,13 @@ func (p *SubscriptionListResponse) FastReadField255(buf []byte) (int, error) {
 }
 
 // for compatibility
-func (p *SubscriptionListResponse) FastWrite(buf []byte) int {
+func (p *SubscriptionPageResponse) FastWrite(buf []byte) int {
 	return 0
 }
 
-func (p *SubscriptionListResponse) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *SubscriptionPageResponse) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "SubscriptionListResponse")
+	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "SubscriptionPageResponse")
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
 		offset += p.fastWriteField2(buf[offset:], binaryWriter)
@@ -627,9 +627,9 @@ func (p *SubscriptionListResponse) FastWriteNocopy(buf []byte, binaryWriter bthr
 	return offset
 }
 
-func (p *SubscriptionListResponse) BLength() int {
+func (p *SubscriptionPageResponse) BLength() int {
 	l := 0
-	l += bthrift.Binary.StructBeginLength("SubscriptionListResponse")
+	l += bthrift.Binary.StructBeginLength("SubscriptionPageResponse")
 	if p != nil {
 		l += p.field1Length()
 		l += p.field2Length()
@@ -640,7 +640,7 @@ func (p *SubscriptionListResponse) BLength() int {
 	return l
 }
 
-func (p *SubscriptionListResponse) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *SubscriptionPageResponse) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "data", thrift.LIST, 1)
 	listBeginOffset := offset
@@ -656,7 +656,7 @@ func (p *SubscriptionListResponse) fastWriteField1(buf []byte, binaryWriter bthr
 	return offset
 }
 
-func (p *SubscriptionListResponse) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *SubscriptionPageResponse) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "pagination", thrift.STRUCT, 2)
 	offset += p.Pagination.FastWriteNocopy(buf[offset:], binaryWriter)
@@ -664,7 +664,7 @@ func (p *SubscriptionListResponse) fastWriteField2(buf []byte, binaryWriter bthr
 	return offset
 }
 
-func (p *SubscriptionListResponse) fastWriteField255(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *SubscriptionPageResponse) fastWriteField255(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "baseResp", thrift.STRUCT, 255)
 	offset += p.BaseResp.FastWriteNocopy(buf[offset:], binaryWriter)
@@ -672,7 +672,7 @@ func (p *SubscriptionListResponse) fastWriteField255(buf []byte, binaryWriter bt
 	return offset
 }
 
-func (p *SubscriptionListResponse) field1Length() int {
+func (p *SubscriptionPageResponse) field1Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("data", thrift.LIST, 1)
 	l += bthrift.Binary.ListBeginLength(thrift.STRUCT, len(p.Data))
@@ -684,7 +684,7 @@ func (p *SubscriptionListResponse) field1Length() int {
 	return l
 }
 
-func (p *SubscriptionListResponse) field2Length() int {
+func (p *SubscriptionPageResponse) field2Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("pagination", thrift.STRUCT, 2)
 	l += p.Pagination.BLength()
@@ -692,7 +692,7 @@ func (p *SubscriptionListResponse) field2Length() int {
 	return l
 }
 
-func (p *SubscriptionListResponse) field255Length() int {
+func (p *SubscriptionPageResponse) field255Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("baseResp", thrift.STRUCT, 255)
 	l += p.BaseResp.BLength()

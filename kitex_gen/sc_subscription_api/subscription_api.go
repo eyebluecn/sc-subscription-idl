@@ -8,7 +8,7 @@ import (
 	"github.com/eyebluecn/sc-subscription-idl/kitex_gen/sc_subscription_base"
 )
 
-type SubscriptionListRequest struct {
+type SubscriptionPageRequest struct {
 	PageNum  int64                      `thrift:"pageNum,1" frugal:"1,default,i64" json:"pageNum"`
 	PageSize int64                      `thrift:"pageSize,2" frugal:"2,default,i64" json:"pageSize"`
 	ReaderId *int64                     `thrift:"readerId,3,optional" frugal:"3,optional,i64" json:"readerId,omitempty"`
@@ -18,89 +18,89 @@ type SubscriptionListRequest struct {
 	Base     *sc_subscription_base.Base `thrift:"base,255,optional" frugal:"255,optional,sc_subscription_base.Base" json:"base,omitempty"`
 }
 
-func NewSubscriptionListRequest() *SubscriptionListRequest {
-	return &SubscriptionListRequest{}
+func NewSubscriptionPageRequest() *SubscriptionPageRequest {
+	return &SubscriptionPageRequest{}
 }
 
-func (p *SubscriptionListRequest) InitDefault() {
-	*p = SubscriptionListRequest{}
+func (p *SubscriptionPageRequest) InitDefault() {
+	*p = SubscriptionPageRequest{}
 }
 
-func (p *SubscriptionListRequest) GetPageNum() (v int64) {
+func (p *SubscriptionPageRequest) GetPageNum() (v int64) {
 	return p.PageNum
 }
 
-func (p *SubscriptionListRequest) GetPageSize() (v int64) {
+func (p *SubscriptionPageRequest) GetPageSize() (v int64) {
 	return p.PageSize
 }
 
-var SubscriptionListRequest_ReaderId_DEFAULT int64
+var SubscriptionPageRequest_ReaderId_DEFAULT int64
 
-func (p *SubscriptionListRequest) GetReaderId() (v int64) {
+func (p *SubscriptionPageRequest) GetReaderId() (v int64) {
 	if !p.IsSetReaderId() {
-		return SubscriptionListRequest_ReaderId_DEFAULT
+		return SubscriptionPageRequest_ReaderId_DEFAULT
 	}
 	return *p.ReaderId
 }
 
-var SubscriptionListRequest_ColumnId_DEFAULT int64
+var SubscriptionPageRequest_ColumnId_DEFAULT int64
 
-func (p *SubscriptionListRequest) GetColumnId() (v int64) {
+func (p *SubscriptionPageRequest) GetColumnId() (v int64) {
 	if !p.IsSetColumnId() {
-		return SubscriptionListRequest_ColumnId_DEFAULT
+		return SubscriptionPageRequest_ColumnId_DEFAULT
 	}
 	return *p.ColumnId
 }
 
-var SubscriptionListRequest_OrderId_DEFAULT int64
+var SubscriptionPageRequest_OrderId_DEFAULT int64
 
-func (p *SubscriptionListRequest) GetOrderId() (v int64) {
+func (p *SubscriptionPageRequest) GetOrderId() (v int64) {
 	if !p.IsSetOrderId() {
-		return SubscriptionListRequest_OrderId_DEFAULT
+		return SubscriptionPageRequest_OrderId_DEFAULT
 	}
 	return *p.OrderId
 }
 
-var SubscriptionListRequest_Status_DEFAULT int32
+var SubscriptionPageRequest_Status_DEFAULT int32
 
-func (p *SubscriptionListRequest) GetStatus() (v int32) {
+func (p *SubscriptionPageRequest) GetStatus() (v int32) {
 	if !p.IsSetStatus() {
-		return SubscriptionListRequest_Status_DEFAULT
+		return SubscriptionPageRequest_Status_DEFAULT
 	}
 	return *p.Status
 }
 
-var SubscriptionListRequest_Base_DEFAULT *sc_subscription_base.Base
+var SubscriptionPageRequest_Base_DEFAULT *sc_subscription_base.Base
 
-func (p *SubscriptionListRequest) GetBase() (v *sc_subscription_base.Base) {
+func (p *SubscriptionPageRequest) GetBase() (v *sc_subscription_base.Base) {
 	if !p.IsSetBase() {
-		return SubscriptionListRequest_Base_DEFAULT
+		return SubscriptionPageRequest_Base_DEFAULT
 	}
 	return p.Base
 }
-func (p *SubscriptionListRequest) SetPageNum(val int64) {
+func (p *SubscriptionPageRequest) SetPageNum(val int64) {
 	p.PageNum = val
 }
-func (p *SubscriptionListRequest) SetPageSize(val int64) {
+func (p *SubscriptionPageRequest) SetPageSize(val int64) {
 	p.PageSize = val
 }
-func (p *SubscriptionListRequest) SetReaderId(val *int64) {
+func (p *SubscriptionPageRequest) SetReaderId(val *int64) {
 	p.ReaderId = val
 }
-func (p *SubscriptionListRequest) SetColumnId(val *int64) {
+func (p *SubscriptionPageRequest) SetColumnId(val *int64) {
 	p.ColumnId = val
 }
-func (p *SubscriptionListRequest) SetOrderId(val *int64) {
+func (p *SubscriptionPageRequest) SetOrderId(val *int64) {
 	p.OrderId = val
 }
-func (p *SubscriptionListRequest) SetStatus(val *int32) {
+func (p *SubscriptionPageRequest) SetStatus(val *int32) {
 	p.Status = val
 }
-func (p *SubscriptionListRequest) SetBase(val *sc_subscription_base.Base) {
+func (p *SubscriptionPageRequest) SetBase(val *sc_subscription_base.Base) {
 	p.Base = val
 }
 
-var fieldIDToName_SubscriptionListRequest = map[int16]string{
+var fieldIDToName_SubscriptionPageRequest = map[int16]string{
 	1:   "pageNum",
 	2:   "pageSize",
 	3:   "readerId",
@@ -110,27 +110,27 @@ var fieldIDToName_SubscriptionListRequest = map[int16]string{
 	255: "base",
 }
 
-func (p *SubscriptionListRequest) IsSetReaderId() bool {
+func (p *SubscriptionPageRequest) IsSetReaderId() bool {
 	return p.ReaderId != nil
 }
 
-func (p *SubscriptionListRequest) IsSetColumnId() bool {
+func (p *SubscriptionPageRequest) IsSetColumnId() bool {
 	return p.ColumnId != nil
 }
 
-func (p *SubscriptionListRequest) IsSetOrderId() bool {
+func (p *SubscriptionPageRequest) IsSetOrderId() bool {
 	return p.OrderId != nil
 }
 
-func (p *SubscriptionListRequest) IsSetStatus() bool {
+func (p *SubscriptionPageRequest) IsSetStatus() bool {
 	return p.Status != nil
 }
 
-func (p *SubscriptionListRequest) IsSetBase() bool {
+func (p *SubscriptionPageRequest) IsSetBase() bool {
 	return p.Base != nil
 }
 
-func (p *SubscriptionListRequest) Read(iprot thrift.TProtocol) (err error) {
+func (p *SubscriptionPageRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -224,7 +224,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SubscriptionListRequest[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SubscriptionPageRequest[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -234,7 +234,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *SubscriptionListRequest) ReadField1(iprot thrift.TProtocol) error {
+func (p *SubscriptionPageRequest) ReadField1(iprot thrift.TProtocol) error {
 
 	var _field int64
 	if v, err := iprot.ReadI64(); err != nil {
@@ -245,7 +245,7 @@ func (p *SubscriptionListRequest) ReadField1(iprot thrift.TProtocol) error {
 	p.PageNum = _field
 	return nil
 }
-func (p *SubscriptionListRequest) ReadField2(iprot thrift.TProtocol) error {
+func (p *SubscriptionPageRequest) ReadField2(iprot thrift.TProtocol) error {
 
 	var _field int64
 	if v, err := iprot.ReadI64(); err != nil {
@@ -256,7 +256,7 @@ func (p *SubscriptionListRequest) ReadField2(iprot thrift.TProtocol) error {
 	p.PageSize = _field
 	return nil
 }
-func (p *SubscriptionListRequest) ReadField3(iprot thrift.TProtocol) error {
+func (p *SubscriptionPageRequest) ReadField3(iprot thrift.TProtocol) error {
 
 	var _field *int64
 	if v, err := iprot.ReadI64(); err != nil {
@@ -267,7 +267,7 @@ func (p *SubscriptionListRequest) ReadField3(iprot thrift.TProtocol) error {
 	p.ReaderId = _field
 	return nil
 }
-func (p *SubscriptionListRequest) ReadField4(iprot thrift.TProtocol) error {
+func (p *SubscriptionPageRequest) ReadField4(iprot thrift.TProtocol) error {
 
 	var _field *int64
 	if v, err := iprot.ReadI64(); err != nil {
@@ -278,7 +278,7 @@ func (p *SubscriptionListRequest) ReadField4(iprot thrift.TProtocol) error {
 	p.ColumnId = _field
 	return nil
 }
-func (p *SubscriptionListRequest) ReadField5(iprot thrift.TProtocol) error {
+func (p *SubscriptionPageRequest) ReadField5(iprot thrift.TProtocol) error {
 
 	var _field *int64
 	if v, err := iprot.ReadI64(); err != nil {
@@ -289,7 +289,7 @@ func (p *SubscriptionListRequest) ReadField5(iprot thrift.TProtocol) error {
 	p.OrderId = _field
 	return nil
 }
-func (p *SubscriptionListRequest) ReadField6(iprot thrift.TProtocol) error {
+func (p *SubscriptionPageRequest) ReadField6(iprot thrift.TProtocol) error {
 
 	var _field *int32
 	if v, err := iprot.ReadI32(); err != nil {
@@ -300,7 +300,7 @@ func (p *SubscriptionListRequest) ReadField6(iprot thrift.TProtocol) error {
 	p.Status = _field
 	return nil
 }
-func (p *SubscriptionListRequest) ReadField255(iprot thrift.TProtocol) error {
+func (p *SubscriptionPageRequest) ReadField255(iprot thrift.TProtocol) error {
 	_field := sc_subscription_base.NewBase()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -309,9 +309,9 @@ func (p *SubscriptionListRequest) ReadField255(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *SubscriptionListRequest) Write(oprot thrift.TProtocol) (err error) {
+func (p *SubscriptionPageRequest) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("SubscriptionListRequest"); err != nil {
+	if err = oprot.WriteStructBegin("SubscriptionPageRequest"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -361,7 +361,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *SubscriptionListRequest) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *SubscriptionPageRequest) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("pageNum", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -378,7 +378,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *SubscriptionListRequest) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *SubscriptionPageRequest) writeField2(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("pageSize", thrift.I64, 2); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -395,7 +395,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
-func (p *SubscriptionListRequest) writeField3(oprot thrift.TProtocol) (err error) {
+func (p *SubscriptionPageRequest) writeField3(oprot thrift.TProtocol) (err error) {
 	if p.IsSetReaderId() {
 		if err = oprot.WriteFieldBegin("readerId", thrift.I64, 3); err != nil {
 			goto WriteFieldBeginError
@@ -414,7 +414,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 
-func (p *SubscriptionListRequest) writeField4(oprot thrift.TProtocol) (err error) {
+func (p *SubscriptionPageRequest) writeField4(oprot thrift.TProtocol) (err error) {
 	if p.IsSetColumnId() {
 		if err = oprot.WriteFieldBegin("columnId", thrift.I64, 4); err != nil {
 			goto WriteFieldBeginError
@@ -433,7 +433,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 
-func (p *SubscriptionListRequest) writeField5(oprot thrift.TProtocol) (err error) {
+func (p *SubscriptionPageRequest) writeField5(oprot thrift.TProtocol) (err error) {
 	if p.IsSetOrderId() {
 		if err = oprot.WriteFieldBegin("orderId", thrift.I64, 5); err != nil {
 			goto WriteFieldBeginError
@@ -452,7 +452,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
 }
 
-func (p *SubscriptionListRequest) writeField6(oprot thrift.TProtocol) (err error) {
+func (p *SubscriptionPageRequest) writeField6(oprot thrift.TProtocol) (err error) {
 	if p.IsSetStatus() {
 		if err = oprot.WriteFieldBegin("status", thrift.I32, 6); err != nil {
 			goto WriteFieldBeginError
@@ -471,7 +471,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
 }
 
-func (p *SubscriptionListRequest) writeField255(oprot thrift.TProtocol) (err error) {
+func (p *SubscriptionPageRequest) writeField255(oprot thrift.TProtocol) (err error) {
 	if p.IsSetBase() {
 		if err = oprot.WriteFieldBegin("base", thrift.STRUCT, 255); err != nil {
 			goto WriteFieldBeginError
@@ -490,15 +490,15 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 255 end error: ", p), err)
 }
 
-func (p *SubscriptionListRequest) String() string {
+func (p *SubscriptionPageRequest) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("SubscriptionListRequest(%+v)", *p)
+	return fmt.Sprintf("SubscriptionPageRequest(%+v)", *p)
 
 }
 
-func (p *SubscriptionListRequest) DeepEqual(ano *SubscriptionListRequest) bool {
+func (p *SubscriptionPageRequest) DeepEqual(ano *SubscriptionPageRequest) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -528,21 +528,21 @@ func (p *SubscriptionListRequest) DeepEqual(ano *SubscriptionListRequest) bool {
 	return true
 }
 
-func (p *SubscriptionListRequest) Field1DeepEqual(src int64) bool {
+func (p *SubscriptionPageRequest) Field1DeepEqual(src int64) bool {
 
 	if p.PageNum != src {
 		return false
 	}
 	return true
 }
-func (p *SubscriptionListRequest) Field2DeepEqual(src int64) bool {
+func (p *SubscriptionPageRequest) Field2DeepEqual(src int64) bool {
 
 	if p.PageSize != src {
 		return false
 	}
 	return true
 }
-func (p *SubscriptionListRequest) Field3DeepEqual(src *int64) bool {
+func (p *SubscriptionPageRequest) Field3DeepEqual(src *int64) bool {
 
 	if p.ReaderId == src {
 		return true
@@ -554,7 +554,7 @@ func (p *SubscriptionListRequest) Field3DeepEqual(src *int64) bool {
 	}
 	return true
 }
-func (p *SubscriptionListRequest) Field4DeepEqual(src *int64) bool {
+func (p *SubscriptionPageRequest) Field4DeepEqual(src *int64) bool {
 
 	if p.ColumnId == src {
 		return true
@@ -566,7 +566,7 @@ func (p *SubscriptionListRequest) Field4DeepEqual(src *int64) bool {
 	}
 	return true
 }
-func (p *SubscriptionListRequest) Field5DeepEqual(src *int64) bool {
+func (p *SubscriptionPageRequest) Field5DeepEqual(src *int64) bool {
 
 	if p.OrderId == src {
 		return true
@@ -578,7 +578,7 @@ func (p *SubscriptionListRequest) Field5DeepEqual(src *int64) bool {
 	}
 	return true
 }
-func (p *SubscriptionListRequest) Field6DeepEqual(src *int32) bool {
+func (p *SubscriptionPageRequest) Field6DeepEqual(src *int32) bool {
 
 	if p.Status == src {
 		return true
@@ -590,7 +590,7 @@ func (p *SubscriptionListRequest) Field6DeepEqual(src *int32) bool {
 	}
 	return true
 }
-func (p *SubscriptionListRequest) Field255DeepEqual(src *sc_subscription_base.Base) bool {
+func (p *SubscriptionPageRequest) Field255DeepEqual(src *sc_subscription_base.Base) bool {
 
 	if !p.Base.DeepEqual(src) {
 		return false
@@ -598,66 +598,66 @@ func (p *SubscriptionListRequest) Field255DeepEqual(src *sc_subscription_base.Ba
 	return true
 }
 
-type SubscriptionListResponse struct {
+type SubscriptionPageResponse struct {
 	Data       []*SubscriptionDTO               `thrift:"data,1" frugal:"1,default,list<SubscriptionDTO>" json:"data"`
 	Pagination *sc_subscription_base.Pagination `thrift:"pagination,2" frugal:"2,default,sc_subscription_base.Pagination" json:"pagination"`
 	BaseResp   *sc_subscription_base.BaseResp   `thrift:"baseResp,255" frugal:"255,default,sc_subscription_base.BaseResp" json:"baseResp"`
 }
 
-func NewSubscriptionListResponse() *SubscriptionListResponse {
-	return &SubscriptionListResponse{}
+func NewSubscriptionPageResponse() *SubscriptionPageResponse {
+	return &SubscriptionPageResponse{}
 }
 
-func (p *SubscriptionListResponse) InitDefault() {
-	*p = SubscriptionListResponse{}
+func (p *SubscriptionPageResponse) InitDefault() {
+	*p = SubscriptionPageResponse{}
 }
 
-func (p *SubscriptionListResponse) GetData() (v []*SubscriptionDTO) {
+func (p *SubscriptionPageResponse) GetData() (v []*SubscriptionDTO) {
 	return p.Data
 }
 
-var SubscriptionListResponse_Pagination_DEFAULT *sc_subscription_base.Pagination
+var SubscriptionPageResponse_Pagination_DEFAULT *sc_subscription_base.Pagination
 
-func (p *SubscriptionListResponse) GetPagination() (v *sc_subscription_base.Pagination) {
+func (p *SubscriptionPageResponse) GetPagination() (v *sc_subscription_base.Pagination) {
 	if !p.IsSetPagination() {
-		return SubscriptionListResponse_Pagination_DEFAULT
+		return SubscriptionPageResponse_Pagination_DEFAULT
 	}
 	return p.Pagination
 }
 
-var SubscriptionListResponse_BaseResp_DEFAULT *sc_subscription_base.BaseResp
+var SubscriptionPageResponse_BaseResp_DEFAULT *sc_subscription_base.BaseResp
 
-func (p *SubscriptionListResponse) GetBaseResp() (v *sc_subscription_base.BaseResp) {
+func (p *SubscriptionPageResponse) GetBaseResp() (v *sc_subscription_base.BaseResp) {
 	if !p.IsSetBaseResp() {
-		return SubscriptionListResponse_BaseResp_DEFAULT
+		return SubscriptionPageResponse_BaseResp_DEFAULT
 	}
 	return p.BaseResp
 }
-func (p *SubscriptionListResponse) SetData(val []*SubscriptionDTO) {
+func (p *SubscriptionPageResponse) SetData(val []*SubscriptionDTO) {
 	p.Data = val
 }
-func (p *SubscriptionListResponse) SetPagination(val *sc_subscription_base.Pagination) {
+func (p *SubscriptionPageResponse) SetPagination(val *sc_subscription_base.Pagination) {
 	p.Pagination = val
 }
-func (p *SubscriptionListResponse) SetBaseResp(val *sc_subscription_base.BaseResp) {
+func (p *SubscriptionPageResponse) SetBaseResp(val *sc_subscription_base.BaseResp) {
 	p.BaseResp = val
 }
 
-var fieldIDToName_SubscriptionListResponse = map[int16]string{
+var fieldIDToName_SubscriptionPageResponse = map[int16]string{
 	1:   "data",
 	2:   "pagination",
 	255: "baseResp",
 }
 
-func (p *SubscriptionListResponse) IsSetPagination() bool {
+func (p *SubscriptionPageResponse) IsSetPagination() bool {
 	return p.Pagination != nil
 }
 
-func (p *SubscriptionListResponse) IsSetBaseResp() bool {
+func (p *SubscriptionPageResponse) IsSetBaseResp() bool {
 	return p.BaseResp != nil
 }
 
-func (p *SubscriptionListResponse) Read(iprot thrift.TProtocol) (err error) {
+func (p *SubscriptionPageResponse) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -719,7 +719,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SubscriptionListResponse[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SubscriptionPageResponse[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -729,7 +729,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *SubscriptionListResponse) ReadField1(iprot thrift.TProtocol) error {
+func (p *SubscriptionPageResponse) ReadField1(iprot thrift.TProtocol) error {
 	_, size, err := iprot.ReadListBegin()
 	if err != nil {
 		return err
@@ -751,7 +751,7 @@ func (p *SubscriptionListResponse) ReadField1(iprot thrift.TProtocol) error {
 	p.Data = _field
 	return nil
 }
-func (p *SubscriptionListResponse) ReadField2(iprot thrift.TProtocol) error {
+func (p *SubscriptionPageResponse) ReadField2(iprot thrift.TProtocol) error {
 	_field := sc_subscription_base.NewPagination()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -759,7 +759,7 @@ func (p *SubscriptionListResponse) ReadField2(iprot thrift.TProtocol) error {
 	p.Pagination = _field
 	return nil
 }
-func (p *SubscriptionListResponse) ReadField255(iprot thrift.TProtocol) error {
+func (p *SubscriptionPageResponse) ReadField255(iprot thrift.TProtocol) error {
 	_field := sc_subscription_base.NewBaseResp()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -768,9 +768,9 @@ func (p *SubscriptionListResponse) ReadField255(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *SubscriptionListResponse) Write(oprot thrift.TProtocol) (err error) {
+func (p *SubscriptionPageResponse) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("SubscriptionListResponse"); err != nil {
+	if err = oprot.WriteStructBegin("SubscriptionPageResponse"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -804,7 +804,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *SubscriptionListResponse) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *SubscriptionPageResponse) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("data", thrift.LIST, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -829,7 +829,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *SubscriptionListResponse) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *SubscriptionPageResponse) writeField2(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("pagination", thrift.STRUCT, 2); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -846,7 +846,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
-func (p *SubscriptionListResponse) writeField255(oprot thrift.TProtocol) (err error) {
+func (p *SubscriptionPageResponse) writeField255(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("baseResp", thrift.STRUCT, 255); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -863,15 +863,15 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 255 end error: ", p), err)
 }
 
-func (p *SubscriptionListResponse) String() string {
+func (p *SubscriptionPageResponse) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("SubscriptionListResponse(%+v)", *p)
+	return fmt.Sprintf("SubscriptionPageResponse(%+v)", *p)
 
 }
 
-func (p *SubscriptionListResponse) DeepEqual(ano *SubscriptionListResponse) bool {
+func (p *SubscriptionPageResponse) DeepEqual(ano *SubscriptionPageResponse) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -889,7 +889,7 @@ func (p *SubscriptionListResponse) DeepEqual(ano *SubscriptionListResponse) bool
 	return true
 }
 
-func (p *SubscriptionListResponse) Field1DeepEqual(src []*SubscriptionDTO) bool {
+func (p *SubscriptionPageResponse) Field1DeepEqual(src []*SubscriptionDTO) bool {
 
 	if len(p.Data) != len(src) {
 		return false
@@ -902,14 +902,14 @@ func (p *SubscriptionListResponse) Field1DeepEqual(src []*SubscriptionDTO) bool 
 	}
 	return true
 }
-func (p *SubscriptionListResponse) Field2DeepEqual(src *sc_subscription_base.Pagination) bool {
+func (p *SubscriptionPageResponse) Field2DeepEqual(src *sc_subscription_base.Pagination) bool {
 
 	if !p.Pagination.DeepEqual(src) {
 		return false
 	}
 	return true
 }
-func (p *SubscriptionListResponse) Field255DeepEqual(src *sc_subscription_base.BaseResp) bool {
+func (p *SubscriptionPageResponse) Field255DeepEqual(src *sc_subscription_base.BaseResp) bool {
 
 	if !p.BaseResp.DeepEqual(src) {
 		return false

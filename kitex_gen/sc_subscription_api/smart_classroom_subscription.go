@@ -9,7 +9,7 @@ import (
 )
 
 type SubscriptionService interface {
-	SubscriptionList(ctx context.Context, request *SubscriptionListRequest) (r *SubscriptionListResponse, err error)
+	SubscriptionPage(ctx context.Context, request *SubscriptionPageRequest) (r *SubscriptionPageResponse, err error)
 }
 
 type SubscriptionServiceClient struct {
@@ -38,11 +38,11 @@ func (p *SubscriptionServiceClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *SubscriptionServiceClient) SubscriptionList(ctx context.Context, request *SubscriptionListRequest) (r *SubscriptionListResponse, err error) {
-	var _args SubscriptionServiceSubscriptionListArgs
+func (p *SubscriptionServiceClient) SubscriptionPage(ctx context.Context, request *SubscriptionPageRequest) (r *SubscriptionPageResponse, err error) {
+	var _args SubscriptionServiceSubscriptionPageArgs
 	_args.Request = request
-	var _result SubscriptionServiceSubscriptionListResult
-	if err = p.Client_().Call(ctx, "SubscriptionList", &_args, &_result); err != nil {
+	var _result SubscriptionServiceSubscriptionPageResult
+	if err = p.Client_().Call(ctx, "SubscriptionPage", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -68,7 +68,7 @@ func (p *SubscriptionServiceProcessor) ProcessorMap() map[string]thrift.TProcess
 
 func NewSubscriptionServiceProcessor(handler SubscriptionService) *SubscriptionServiceProcessor {
 	self := &SubscriptionServiceProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
-	self.AddToProcessorMap("SubscriptionList", &subscriptionServiceProcessorSubscriptionList{handler: handler})
+	self.AddToProcessorMap("SubscriptionPage", &subscriptionServiceProcessorSubscriptionPage{handler: handler})
 	return self
 }
 func (p *SubscriptionServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -89,16 +89,16 @@ func (p *SubscriptionServiceProcessor) Process(ctx context.Context, iprot, oprot
 	return false, x
 }
 
-type subscriptionServiceProcessorSubscriptionList struct {
+type subscriptionServiceProcessorSubscriptionPage struct {
 	handler SubscriptionService
 }
 
-func (p *subscriptionServiceProcessorSubscriptionList) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := SubscriptionServiceSubscriptionListArgs{}
+func (p *subscriptionServiceProcessorSubscriptionPage) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := SubscriptionServiceSubscriptionPageArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("SubscriptionList", thrift.EXCEPTION, seqId)
+		oprot.WriteMessageBegin("SubscriptionPage", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -107,11 +107,11 @@ func (p *subscriptionServiceProcessorSubscriptionList) Process(ctx context.Conte
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := SubscriptionServiceSubscriptionListResult{}
-	var retval *SubscriptionListResponse
-	if retval, err2 = p.handler.SubscriptionList(ctx, args.Request); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing SubscriptionList: "+err2.Error())
-		oprot.WriteMessageBegin("SubscriptionList", thrift.EXCEPTION, seqId)
+	result := SubscriptionServiceSubscriptionPageResult{}
+	var retval *SubscriptionPageResponse
+	if retval, err2 = p.handler.SubscriptionPage(ctx, args.Request); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing SubscriptionPage: "+err2.Error())
+		oprot.WriteMessageBegin("SubscriptionPage", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -119,7 +119,7 @@ func (p *subscriptionServiceProcessorSubscriptionList) Process(ctx context.Conte
 	} else {
 		result.Success = retval
 	}
-	if err2 = oprot.WriteMessageBegin("SubscriptionList", thrift.REPLY, seqId); err2 != nil {
+	if err2 = oprot.WriteMessageBegin("SubscriptionPage", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -137,39 +137,39 @@ func (p *subscriptionServiceProcessorSubscriptionList) Process(ctx context.Conte
 	return true, err
 }
 
-type SubscriptionServiceSubscriptionListArgs struct {
-	Request *SubscriptionListRequest `thrift:"request,1" frugal:"1,default,SubscriptionListRequest" json:"request"`
+type SubscriptionServiceSubscriptionPageArgs struct {
+	Request *SubscriptionPageRequest `thrift:"request,1" frugal:"1,default,SubscriptionPageRequest" json:"request"`
 }
 
-func NewSubscriptionServiceSubscriptionListArgs() *SubscriptionServiceSubscriptionListArgs {
-	return &SubscriptionServiceSubscriptionListArgs{}
+func NewSubscriptionServiceSubscriptionPageArgs() *SubscriptionServiceSubscriptionPageArgs {
+	return &SubscriptionServiceSubscriptionPageArgs{}
 }
 
-func (p *SubscriptionServiceSubscriptionListArgs) InitDefault() {
-	*p = SubscriptionServiceSubscriptionListArgs{}
+func (p *SubscriptionServiceSubscriptionPageArgs) InitDefault() {
+	*p = SubscriptionServiceSubscriptionPageArgs{}
 }
 
-var SubscriptionServiceSubscriptionListArgs_Request_DEFAULT *SubscriptionListRequest
+var SubscriptionServiceSubscriptionPageArgs_Request_DEFAULT *SubscriptionPageRequest
 
-func (p *SubscriptionServiceSubscriptionListArgs) GetRequest() (v *SubscriptionListRequest) {
+func (p *SubscriptionServiceSubscriptionPageArgs) GetRequest() (v *SubscriptionPageRequest) {
 	if !p.IsSetRequest() {
-		return SubscriptionServiceSubscriptionListArgs_Request_DEFAULT
+		return SubscriptionServiceSubscriptionPageArgs_Request_DEFAULT
 	}
 	return p.Request
 }
-func (p *SubscriptionServiceSubscriptionListArgs) SetRequest(val *SubscriptionListRequest) {
+func (p *SubscriptionServiceSubscriptionPageArgs) SetRequest(val *SubscriptionPageRequest) {
 	p.Request = val
 }
 
-var fieldIDToName_SubscriptionServiceSubscriptionListArgs = map[int16]string{
+var fieldIDToName_SubscriptionServiceSubscriptionPageArgs = map[int16]string{
 	1: "request",
 }
 
-func (p *SubscriptionServiceSubscriptionListArgs) IsSetRequest() bool {
+func (p *SubscriptionServiceSubscriptionPageArgs) IsSetRequest() bool {
 	return p.Request != nil
 }
 
-func (p *SubscriptionServiceSubscriptionListArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *SubscriptionServiceSubscriptionPageArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -215,7 +215,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SubscriptionServiceSubscriptionListArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SubscriptionServiceSubscriptionPageArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -225,8 +225,8 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *SubscriptionServiceSubscriptionListArgs) ReadField1(iprot thrift.TProtocol) error {
-	_field := NewSubscriptionListRequest()
+func (p *SubscriptionServiceSubscriptionPageArgs) ReadField1(iprot thrift.TProtocol) error {
+	_field := NewSubscriptionPageRequest()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
@@ -234,9 +234,9 @@ func (p *SubscriptionServiceSubscriptionListArgs) ReadField1(iprot thrift.TProto
 	return nil
 }
 
-func (p *SubscriptionServiceSubscriptionListArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *SubscriptionServiceSubscriptionPageArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("SubscriptionList_args"); err != nil {
+	if err = oprot.WriteStructBegin("SubscriptionPage_args"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -262,7 +262,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *SubscriptionServiceSubscriptionListArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *SubscriptionServiceSubscriptionPageArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("request", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -279,15 +279,15 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *SubscriptionServiceSubscriptionListArgs) String() string {
+func (p *SubscriptionServiceSubscriptionPageArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("SubscriptionServiceSubscriptionListArgs(%+v)", *p)
+	return fmt.Sprintf("SubscriptionServiceSubscriptionPageArgs(%+v)", *p)
 
 }
 
-func (p *SubscriptionServiceSubscriptionListArgs) DeepEqual(ano *SubscriptionServiceSubscriptionListArgs) bool {
+func (p *SubscriptionServiceSubscriptionPageArgs) DeepEqual(ano *SubscriptionServiceSubscriptionPageArgs) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -299,7 +299,7 @@ func (p *SubscriptionServiceSubscriptionListArgs) DeepEqual(ano *SubscriptionSer
 	return true
 }
 
-func (p *SubscriptionServiceSubscriptionListArgs) Field1DeepEqual(src *SubscriptionListRequest) bool {
+func (p *SubscriptionServiceSubscriptionPageArgs) Field1DeepEqual(src *SubscriptionPageRequest) bool {
 
 	if !p.Request.DeepEqual(src) {
 		return false
@@ -307,39 +307,39 @@ func (p *SubscriptionServiceSubscriptionListArgs) Field1DeepEqual(src *Subscript
 	return true
 }
 
-type SubscriptionServiceSubscriptionListResult struct {
-	Success *SubscriptionListResponse `thrift:"success,0,optional" frugal:"0,optional,SubscriptionListResponse" json:"success,omitempty"`
+type SubscriptionServiceSubscriptionPageResult struct {
+	Success *SubscriptionPageResponse `thrift:"success,0,optional" frugal:"0,optional,SubscriptionPageResponse" json:"success,omitempty"`
 }
 
-func NewSubscriptionServiceSubscriptionListResult() *SubscriptionServiceSubscriptionListResult {
-	return &SubscriptionServiceSubscriptionListResult{}
+func NewSubscriptionServiceSubscriptionPageResult() *SubscriptionServiceSubscriptionPageResult {
+	return &SubscriptionServiceSubscriptionPageResult{}
 }
 
-func (p *SubscriptionServiceSubscriptionListResult) InitDefault() {
-	*p = SubscriptionServiceSubscriptionListResult{}
+func (p *SubscriptionServiceSubscriptionPageResult) InitDefault() {
+	*p = SubscriptionServiceSubscriptionPageResult{}
 }
 
-var SubscriptionServiceSubscriptionListResult_Success_DEFAULT *SubscriptionListResponse
+var SubscriptionServiceSubscriptionPageResult_Success_DEFAULT *SubscriptionPageResponse
 
-func (p *SubscriptionServiceSubscriptionListResult) GetSuccess() (v *SubscriptionListResponse) {
+func (p *SubscriptionServiceSubscriptionPageResult) GetSuccess() (v *SubscriptionPageResponse) {
 	if !p.IsSetSuccess() {
-		return SubscriptionServiceSubscriptionListResult_Success_DEFAULT
+		return SubscriptionServiceSubscriptionPageResult_Success_DEFAULT
 	}
 	return p.Success
 }
-func (p *SubscriptionServiceSubscriptionListResult) SetSuccess(x interface{}) {
-	p.Success = x.(*SubscriptionListResponse)
+func (p *SubscriptionServiceSubscriptionPageResult) SetSuccess(x interface{}) {
+	p.Success = x.(*SubscriptionPageResponse)
 }
 
-var fieldIDToName_SubscriptionServiceSubscriptionListResult = map[int16]string{
+var fieldIDToName_SubscriptionServiceSubscriptionPageResult = map[int16]string{
 	0: "success",
 }
 
-func (p *SubscriptionServiceSubscriptionListResult) IsSetSuccess() bool {
+func (p *SubscriptionServiceSubscriptionPageResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *SubscriptionServiceSubscriptionListResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *SubscriptionServiceSubscriptionPageResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -385,7 +385,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SubscriptionServiceSubscriptionListResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SubscriptionServiceSubscriptionPageResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -395,8 +395,8 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *SubscriptionServiceSubscriptionListResult) ReadField0(iprot thrift.TProtocol) error {
-	_field := NewSubscriptionListResponse()
+func (p *SubscriptionServiceSubscriptionPageResult) ReadField0(iprot thrift.TProtocol) error {
+	_field := NewSubscriptionPageResponse()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
@@ -404,9 +404,9 @@ func (p *SubscriptionServiceSubscriptionListResult) ReadField0(iprot thrift.TPro
 	return nil
 }
 
-func (p *SubscriptionServiceSubscriptionListResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *SubscriptionServiceSubscriptionPageResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("SubscriptionList_result"); err != nil {
+	if err = oprot.WriteStructBegin("SubscriptionPage_result"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -432,7 +432,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *SubscriptionServiceSubscriptionListResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *SubscriptionServiceSubscriptionPageResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -451,15 +451,15 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *SubscriptionServiceSubscriptionListResult) String() string {
+func (p *SubscriptionServiceSubscriptionPageResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("SubscriptionServiceSubscriptionListResult(%+v)", *p)
+	return fmt.Sprintf("SubscriptionServiceSubscriptionPageResult(%+v)", *p)
 
 }
 
-func (p *SubscriptionServiceSubscriptionListResult) DeepEqual(ano *SubscriptionServiceSubscriptionListResult) bool {
+func (p *SubscriptionServiceSubscriptionPageResult) DeepEqual(ano *SubscriptionServiceSubscriptionPageResult) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -471,7 +471,7 @@ func (p *SubscriptionServiceSubscriptionListResult) DeepEqual(ano *SubscriptionS
 	return true
 }
 
-func (p *SubscriptionServiceSubscriptionListResult) Field0DeepEqual(src *SubscriptionListResponse) bool {
+func (p *SubscriptionServiceSubscriptionPageResult) Field0DeepEqual(src *SubscriptionPageResponse) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false

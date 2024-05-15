@@ -5,7 +5,7 @@ include "model/model.thrift"
 namespace go sc_subscription_api
 
 //订阅列表 请求体
-struct SubscriptionListRequest {
+struct SubscriptionPageRequest {
 	1: i64 pageNum //当前页码 1基
 	2: i64 pageSize //每页大小
 	3: optional i64 readerId //读者id
@@ -17,7 +17,7 @@ struct SubscriptionListRequest {
 }
 
 //订阅列表 响应体
-struct SubscriptionListResponse {
+struct SubscriptionPageResponse {
 	1: list<model.SubscriptionDTO> data //数据信息
     2: pagination.Pagination pagination //分页指示器
 
