@@ -9,13 +9,13 @@ import (
 )
 
 type SubscriptionPageRequest struct {
-	PageNum  int64                      `thrift:"pageNum,1" frugal:"1,default,i64" json:"pageNum"`
-	PageSize int64                      `thrift:"pageSize,2" frugal:"2,default,i64" json:"pageSize"`
-	ReaderId *int64                     `thrift:"readerId,3,optional" frugal:"3,optional,i64" json:"readerId,omitempty"`
-	ColumnId *int64                     `thrift:"columnId,4,optional" frugal:"4,optional,i64" json:"columnId,omitempty"`
-	OrderId  *int64                     `thrift:"orderId,5,optional" frugal:"5,optional,i64" json:"orderId,omitempty"`
-	Status   *int32                     `thrift:"status,6,optional" frugal:"6,optional,i32" json:"status,omitempty"`
-	Base     *sc_subscription_base.Base `thrift:"base,255,optional" frugal:"255,optional,sc_subscription_base.Base" json:"base,omitempty"`
+	PageNum   int64                      `thrift:"pageNum,1" frugal:"1,default,i64" json:"pageNum"`
+	PageSize  int64                      `thrift:"pageSize,2" frugal:"2,default,i64" json:"pageSize"`
+	ReaderId  *int64                     `thrift:"readerId,3,optional" frugal:"3,optional,i64" json:"readerId,omitempty"`
+	ColumnIds []int64                    `thrift:"columnIds,4,optional" frugal:"4,optional,list<i64>" json:"columnIds,omitempty"`
+	OrderId   *int64                     `thrift:"orderId,5,optional" frugal:"5,optional,i64" json:"orderId,omitempty"`
+	Status    *SubscriptionStatus        `thrift:"status,6,optional" frugal:"6,optional,SubscriptionStatus" json:"status,omitempty"`
+	Base      *sc_subscription_base.Base `thrift:"base,255,optional" frugal:"255,optional,sc_subscription_base.Base" json:"base,omitempty"`
 }
 
 func NewSubscriptionPageRequest() *SubscriptionPageRequest {
@@ -43,13 +43,13 @@ func (p *SubscriptionPageRequest) GetReaderId() (v int64) {
 	return *p.ReaderId
 }
 
-var SubscriptionPageRequest_ColumnId_DEFAULT int64
+var SubscriptionPageRequest_ColumnIds_DEFAULT []int64
 
-func (p *SubscriptionPageRequest) GetColumnId() (v int64) {
-	if !p.IsSetColumnId() {
-		return SubscriptionPageRequest_ColumnId_DEFAULT
+func (p *SubscriptionPageRequest) GetColumnIds() (v []int64) {
+	if !p.IsSetColumnIds() {
+		return SubscriptionPageRequest_ColumnIds_DEFAULT
 	}
-	return *p.ColumnId
+	return p.ColumnIds
 }
 
 var SubscriptionPageRequest_OrderId_DEFAULT int64
@@ -61,9 +61,9 @@ func (p *SubscriptionPageRequest) GetOrderId() (v int64) {
 	return *p.OrderId
 }
 
-var SubscriptionPageRequest_Status_DEFAULT int32
+var SubscriptionPageRequest_Status_DEFAULT SubscriptionStatus
 
-func (p *SubscriptionPageRequest) GetStatus() (v int32) {
+func (p *SubscriptionPageRequest) GetStatus() (v SubscriptionStatus) {
 	if !p.IsSetStatus() {
 		return SubscriptionPageRequest_Status_DEFAULT
 	}
@@ -87,13 +87,13 @@ func (p *SubscriptionPageRequest) SetPageSize(val int64) {
 func (p *SubscriptionPageRequest) SetReaderId(val *int64) {
 	p.ReaderId = val
 }
-func (p *SubscriptionPageRequest) SetColumnId(val *int64) {
-	p.ColumnId = val
+func (p *SubscriptionPageRequest) SetColumnIds(val []int64) {
+	p.ColumnIds = val
 }
 func (p *SubscriptionPageRequest) SetOrderId(val *int64) {
 	p.OrderId = val
 }
-func (p *SubscriptionPageRequest) SetStatus(val *int32) {
+func (p *SubscriptionPageRequest) SetStatus(val *SubscriptionStatus) {
 	p.Status = val
 }
 func (p *SubscriptionPageRequest) SetBase(val *sc_subscription_base.Base) {
@@ -104,7 +104,7 @@ var fieldIDToName_SubscriptionPageRequest = map[int16]string{
 	1:   "pageNum",
 	2:   "pageSize",
 	3:   "readerId",
-	4:   "columnId",
+	4:   "columnIds",
 	5:   "orderId",
 	6:   "status",
 	255: "base",
@@ -114,8 +114,8 @@ func (p *SubscriptionPageRequest) IsSetReaderId() bool {
 	return p.ReaderId != nil
 }
 
-func (p *SubscriptionPageRequest) IsSetColumnId() bool {
-	return p.ColumnId != nil
+func (p *SubscriptionPageRequest) IsSetColumnIds() bool {
+	return p.ColumnIds != nil
 }
 
 func (p *SubscriptionPageRequest) IsSetOrderId() bool {
@@ -174,7 +174,7 @@ func (p *SubscriptionPageRequest) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 4:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.LIST {
 				if err = p.ReadField4(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -268,14 +268,26 @@ func (p *SubscriptionPageRequest) ReadField3(iprot thrift.TProtocol) error {
 	return nil
 }
 func (p *SubscriptionPageRequest) ReadField4(iprot thrift.TProtocol) error {
-
-	var _field *int64
-	if v, err := iprot.ReadI64(); err != nil {
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
 		return err
-	} else {
-		_field = &v
 	}
-	p.ColumnId = _field
+	_field := make([]int64, 0, size)
+	for i := 0; i < size; i++ {
+
+		var _elem int64
+		if v, err := iprot.ReadI64(); err != nil {
+			return err
+		} else {
+			_elem = v
+		}
+
+		_field = append(_field, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
+		return err
+	}
+	p.ColumnIds = _field
 	return nil
 }
 func (p *SubscriptionPageRequest) ReadField5(iprot thrift.TProtocol) error {
@@ -291,11 +303,12 @@ func (p *SubscriptionPageRequest) ReadField5(iprot thrift.TProtocol) error {
 }
 func (p *SubscriptionPageRequest) ReadField6(iprot thrift.TProtocol) error {
 
-	var _field *int32
+	var _field *SubscriptionStatus
 	if v, err := iprot.ReadI32(); err != nil {
 		return err
 	} else {
-		_field = &v
+		tmp := SubscriptionStatus(v)
+		_field = &tmp
 	}
 	p.Status = _field
 	return nil
@@ -415,11 +428,19 @@ WriteFieldEndError:
 }
 
 func (p *SubscriptionPageRequest) writeField4(oprot thrift.TProtocol) (err error) {
-	if p.IsSetColumnId() {
-		if err = oprot.WriteFieldBegin("columnId", thrift.I64, 4); err != nil {
+	if p.IsSetColumnIds() {
+		if err = oprot.WriteFieldBegin("columnIds", thrift.LIST, 4); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteI64(*p.ColumnId); err != nil {
+		if err := oprot.WriteListBegin(thrift.I64, len(p.ColumnIds)); err != nil {
+			return err
+		}
+		for _, v := range p.ColumnIds {
+			if err := oprot.WriteI64(v); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteListEnd(); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -457,7 +478,7 @@ func (p *SubscriptionPageRequest) writeField6(oprot thrift.TProtocol) (err error
 		if err = oprot.WriteFieldBegin("status", thrift.I32, 6); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteI32(*p.Status); err != nil {
+		if err := oprot.WriteI32(int32(*p.Status)); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -513,7 +534,7 @@ func (p *SubscriptionPageRequest) DeepEqual(ano *SubscriptionPageRequest) bool {
 	if !p.Field3DeepEqual(ano.ReaderId) {
 		return false
 	}
-	if !p.Field4DeepEqual(ano.ColumnId) {
+	if !p.Field4DeepEqual(ano.ColumnIds) {
 		return false
 	}
 	if !p.Field5DeepEqual(ano.OrderId) {
@@ -554,15 +575,16 @@ func (p *SubscriptionPageRequest) Field3DeepEqual(src *int64) bool {
 	}
 	return true
 }
-func (p *SubscriptionPageRequest) Field4DeepEqual(src *int64) bool {
+func (p *SubscriptionPageRequest) Field4DeepEqual(src []int64) bool {
 
-	if p.ColumnId == src {
-		return true
-	} else if p.ColumnId == nil || src == nil {
+	if len(p.ColumnIds) != len(src) {
 		return false
 	}
-	if *p.ColumnId != *src {
-		return false
+	for i, v := range p.ColumnIds {
+		_src := src[i]
+		if v != _src {
+			return false
+		}
 	}
 	return true
 }
@@ -578,7 +600,7 @@ func (p *SubscriptionPageRequest) Field5DeepEqual(src *int64) bool {
 	}
 	return true
 }
-func (p *SubscriptionPageRequest) Field6DeepEqual(src *int32) bool {
+func (p *SubscriptionPageRequest) Field6DeepEqual(src *SubscriptionStatus) bool {
 
 	if p.Status == src {
 		return true

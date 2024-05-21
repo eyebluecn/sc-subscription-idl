@@ -91,7 +91,7 @@ func (p *SubscriptionPageRequest) FastRead(buf []byte) (int, error) {
 				}
 			}
 		case 4:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.LIST {
 				l, err = p.FastReadField4(buf[offset:])
 				offset += l
 				if err != nil {
@@ -225,12 +225,29 @@ func (p *SubscriptionPageRequest) FastReadField3(buf []byte) (int, error) {
 func (p *SubscriptionPageRequest) FastReadField4(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
+	_, size, l, err := bthrift.Binary.ReadListBegin(buf[offset:])
+	offset += l
+	if err != nil {
+		return offset, err
+	}
+	p.ColumnIds = make([]int64, 0, size)
+	for i := 0; i < size; i++ {
+		var _elem int64
+		if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
+			return offset, err
+		} else {
+			offset += l
+
+			_elem = v
+
+		}
+
+		p.ColumnIds = append(p.ColumnIds, _elem)
+	}
+	if l, err := bthrift.Binary.ReadListEnd(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
-		p.ColumnId = &v
-
 	}
 	return offset, nil
 }
@@ -255,7 +272,9 @@ func (p *SubscriptionPageRequest) FastReadField6(buf []byte) (int, error) {
 		return offset, err
 	} else {
 		offset += l
-		p.Status = &v
+
+		tmp := SubscriptionStatus(v)
+		p.Status = &tmp
 
 	}
 	return offset, nil
@@ -286,8 +305,8 @@ func (p *SubscriptionPageRequest) FastWriteNocopy(buf []byte, binaryWriter bthri
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
 		offset += p.fastWriteField2(buf[offset:], binaryWriter)
 		offset += p.fastWriteField3(buf[offset:], binaryWriter)
-		offset += p.fastWriteField4(buf[offset:], binaryWriter)
 		offset += p.fastWriteField5(buf[offset:], binaryWriter)
+		offset += p.fastWriteField4(buf[offset:], binaryWriter)
 		offset += p.fastWriteField6(buf[offset:], binaryWriter)
 		offset += p.fastWriteField255(buf[offset:], binaryWriter)
 	}
@@ -344,10 +363,18 @@ func (p *SubscriptionPageRequest) fastWriteField3(buf []byte, binaryWriter bthri
 
 func (p *SubscriptionPageRequest) fastWriteField4(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	if p.IsSetColumnId() {
-		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "columnId", thrift.I64, 4)
-		offset += bthrift.Binary.WriteI64(buf[offset:], *p.ColumnId)
+	if p.IsSetColumnIds() {
+		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "columnIds", thrift.LIST, 4)
+		listBeginOffset := offset
+		offset += bthrift.Binary.ListBeginLength(thrift.I64, 0)
+		var length int
+		for _, v := range p.ColumnIds {
+			length++
+			offset += bthrift.Binary.WriteI64(buf[offset:], v)
 
+		}
+		bthrift.Binary.WriteListBegin(buf[listBeginOffset:], thrift.I64, length)
+		offset += bthrift.Binary.WriteListEnd(buf[offset:])
 		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	}
 	return offset
@@ -368,7 +395,7 @@ func (p *SubscriptionPageRequest) fastWriteField6(buf []byte, binaryWriter bthri
 	offset := 0
 	if p.IsSetStatus() {
 		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "status", thrift.I32, 6)
-		offset += bthrift.Binary.WriteI32(buf[offset:], *p.Status)
+		offset += bthrift.Binary.WriteI32(buf[offset:], int32(*p.Status))
 
 		offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	}
@@ -416,10 +443,12 @@ func (p *SubscriptionPageRequest) field3Length() int {
 
 func (p *SubscriptionPageRequest) field4Length() int {
 	l := 0
-	if p.IsSetColumnId() {
-		l += bthrift.Binary.FieldBeginLength("columnId", thrift.I64, 4)
-		l += bthrift.Binary.I64Length(*p.ColumnId)
-
+	if p.IsSetColumnIds() {
+		l += bthrift.Binary.FieldBeginLength("columnIds", thrift.LIST, 4)
+		l += bthrift.Binary.ListBeginLength(thrift.I64, len(p.ColumnIds))
+		var tmpV int64
+		l += bthrift.Binary.I64Length(int64(tmpV)) * len(p.ColumnIds)
+		l += bthrift.Binary.ListEndLength()
 		l += bthrift.Binary.FieldEndLength()
 	}
 	return l
@@ -440,7 +469,7 @@ func (p *SubscriptionPageRequest) field6Length() int {
 	l := 0
 	if p.IsSetStatus() {
 		l += bthrift.Binary.FieldBeginLength("status", thrift.I32, 6)
-		l += bthrift.Binary.I32Length(*p.Status)
+		l += bthrift.Binary.I32Length(int32(*p.Status))
 
 		l += bthrift.Binary.FieldEndLength()
 	}

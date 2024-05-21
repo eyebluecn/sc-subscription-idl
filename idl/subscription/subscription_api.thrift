@@ -9,9 +9,9 @@ struct SubscriptionPageRequest {
 	1: i64 pageNum //当前页码 1基
 	2: i64 pageSize //每页大小
 	3: optional i64 readerId //读者id
-	4: optional i64 columnId //专栏id
+	4: optional list<i64> columnIds //专栏id
 	5: optional i64 orderId //订单id
-	6: optional i32 status //状态
+	6: optional enums.SubscriptionStatus status //状态
 
 	255: optional base.Base base //标准请求内容
 }
