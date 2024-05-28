@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/eyebluecn/sc-subscription-idl/kitex_gen/sc_subscription_base"
+	"strings"
 )
 
 type SubscriptionPageRequest struct {
@@ -934,6 +935,819 @@ func (p *SubscriptionPageResponse) Field2DeepEqual(src *sc_subscription_base.Pag
 func (p *SubscriptionPageResponse) Field255DeepEqual(src *sc_subscription_base.BaseResp) bool {
 
 	if !p.BaseResp.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type SubscriptionPrepareRequest struct {
+	ColumnId  int64                      `thrift:"columnId,1" frugal:"1,default,i64" json:"columnId"`
+	PayMethod string                     `thrift:"payMethod,2" frugal:"2,default,string" json:"payMethod"`
+	Base      *sc_subscription_base.Base `thrift:"base,255,optional" frugal:"255,optional,sc_subscription_base.Base" json:"base,omitempty"`
+}
+
+func NewSubscriptionPrepareRequest() *SubscriptionPrepareRequest {
+	return &SubscriptionPrepareRequest{}
+}
+
+func (p *SubscriptionPrepareRequest) InitDefault() {
+	*p = SubscriptionPrepareRequest{}
+}
+
+func (p *SubscriptionPrepareRequest) GetColumnId() (v int64) {
+	return p.ColumnId
+}
+
+func (p *SubscriptionPrepareRequest) GetPayMethod() (v string) {
+	return p.PayMethod
+}
+
+var SubscriptionPrepareRequest_Base_DEFAULT *sc_subscription_base.Base
+
+func (p *SubscriptionPrepareRequest) GetBase() (v *sc_subscription_base.Base) {
+	if !p.IsSetBase() {
+		return SubscriptionPrepareRequest_Base_DEFAULT
+	}
+	return p.Base
+}
+func (p *SubscriptionPrepareRequest) SetColumnId(val int64) {
+	p.ColumnId = val
+}
+func (p *SubscriptionPrepareRequest) SetPayMethod(val string) {
+	p.PayMethod = val
+}
+func (p *SubscriptionPrepareRequest) SetBase(val *sc_subscription_base.Base) {
+	p.Base = val
+}
+
+var fieldIDToName_SubscriptionPrepareRequest = map[int16]string{
+	1:   "columnId",
+	2:   "payMethod",
+	255: "base",
+}
+
+func (p *SubscriptionPrepareRequest) IsSetBase() bool {
+	return p.Base != nil
+}
+
+func (p *SubscriptionPrepareRequest) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 255:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField255(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SubscriptionPrepareRequest[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *SubscriptionPrepareRequest) ReadField1(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.ColumnId = _field
+	return nil
+}
+func (p *SubscriptionPrepareRequest) ReadField2(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.PayMethod = _field
+	return nil
+}
+func (p *SubscriptionPrepareRequest) ReadField255(iprot thrift.TProtocol) error {
+	_field := sc_subscription_base.NewBase()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Base = _field
+	return nil
+}
+
+func (p *SubscriptionPrepareRequest) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("SubscriptionPrepareRequest"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField255(oprot); err != nil {
+			fieldId = 255
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *SubscriptionPrepareRequest) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("columnId", thrift.I64, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.ColumnId); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *SubscriptionPrepareRequest) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("payMethod", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.PayMethod); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *SubscriptionPrepareRequest) writeField255(oprot thrift.TProtocol) (err error) {
+	if p.IsSetBase() {
+		if err = oprot.WriteFieldBegin("base", thrift.STRUCT, 255); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Base.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 255 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 255 end error: ", p), err)
+}
+
+func (p *SubscriptionPrepareRequest) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("SubscriptionPrepareRequest(%+v)", *p)
+
+}
+
+func (p *SubscriptionPrepareRequest) DeepEqual(ano *SubscriptionPrepareRequest) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.ColumnId) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.PayMethod) {
+		return false
+	}
+	if !p.Field255DeepEqual(ano.Base) {
+		return false
+	}
+	return true
+}
+
+func (p *SubscriptionPrepareRequest) Field1DeepEqual(src int64) bool {
+
+	if p.ColumnId != src {
+		return false
+	}
+	return true
+}
+func (p *SubscriptionPrepareRequest) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.PayMethod, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *SubscriptionPrepareRequest) Field255DeepEqual(src *sc_subscription_base.Base) bool {
+
+	if !p.Base.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type SubscriptionPrepareResponse struct {
+	Data     *SubscriptionPrepareData       `thrift:"data,1" frugal:"1,default,SubscriptionPrepareData" json:"data"`
+	BaseResp *sc_subscription_base.BaseResp `thrift:"baseResp,255" frugal:"255,default,sc_subscription_base.BaseResp" json:"baseResp"`
+}
+
+func NewSubscriptionPrepareResponse() *SubscriptionPrepareResponse {
+	return &SubscriptionPrepareResponse{}
+}
+
+func (p *SubscriptionPrepareResponse) InitDefault() {
+	*p = SubscriptionPrepareResponse{}
+}
+
+var SubscriptionPrepareResponse_Data_DEFAULT *SubscriptionPrepareData
+
+func (p *SubscriptionPrepareResponse) GetData() (v *SubscriptionPrepareData) {
+	if !p.IsSetData() {
+		return SubscriptionPrepareResponse_Data_DEFAULT
+	}
+	return p.Data
+}
+
+var SubscriptionPrepareResponse_BaseResp_DEFAULT *sc_subscription_base.BaseResp
+
+func (p *SubscriptionPrepareResponse) GetBaseResp() (v *sc_subscription_base.BaseResp) {
+	if !p.IsSetBaseResp() {
+		return SubscriptionPrepareResponse_BaseResp_DEFAULT
+	}
+	return p.BaseResp
+}
+func (p *SubscriptionPrepareResponse) SetData(val *SubscriptionPrepareData) {
+	p.Data = val
+}
+func (p *SubscriptionPrepareResponse) SetBaseResp(val *sc_subscription_base.BaseResp) {
+	p.BaseResp = val
+}
+
+var fieldIDToName_SubscriptionPrepareResponse = map[int16]string{
+	1:   "data",
+	255: "baseResp",
+}
+
+func (p *SubscriptionPrepareResponse) IsSetData() bool {
+	return p.Data != nil
+}
+
+func (p *SubscriptionPrepareResponse) IsSetBaseResp() bool {
+	return p.BaseResp != nil
+}
+
+func (p *SubscriptionPrepareResponse) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 255:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField255(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SubscriptionPrepareResponse[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *SubscriptionPrepareResponse) ReadField1(iprot thrift.TProtocol) error {
+	_field := NewSubscriptionPrepareData()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Data = _field
+	return nil
+}
+func (p *SubscriptionPrepareResponse) ReadField255(iprot thrift.TProtocol) error {
+	_field := sc_subscription_base.NewBaseResp()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.BaseResp = _field
+	return nil
+}
+
+func (p *SubscriptionPrepareResponse) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("SubscriptionPrepareResponse"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField255(oprot); err != nil {
+			fieldId = 255
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *SubscriptionPrepareResponse) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("data", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Data.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *SubscriptionPrepareResponse) writeField255(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("baseResp", thrift.STRUCT, 255); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.BaseResp.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 255 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 255 end error: ", p), err)
+}
+
+func (p *SubscriptionPrepareResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("SubscriptionPrepareResponse(%+v)", *p)
+
+}
+
+func (p *SubscriptionPrepareResponse) DeepEqual(ano *SubscriptionPrepareResponse) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Data) {
+		return false
+	}
+	if !p.Field255DeepEqual(ano.BaseResp) {
+		return false
+	}
+	return true
+}
+
+func (p *SubscriptionPrepareResponse) Field1DeepEqual(src *SubscriptionPrepareData) bool {
+
+	if !p.Data.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+func (p *SubscriptionPrepareResponse) Field255DeepEqual(src *sc_subscription_base.BaseResp) bool {
+
+	if !p.BaseResp.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type SubscriptionPrepareData struct {
+	OrderDTO           *OrderDTO `thrift:"orderDTO,1" frugal:"1,default,OrderDTO" json:"orderDTO"`
+	ThirdTransactionNo string    `thrift:"thirdTransactionNo,2" frugal:"2,default,string" json:"thirdTransactionNo"`
+	NonceStr           string    `thrift:"nonceStr,3" frugal:"3,default,string" json:"nonceStr"`
+}
+
+func NewSubscriptionPrepareData() *SubscriptionPrepareData {
+	return &SubscriptionPrepareData{}
+}
+
+func (p *SubscriptionPrepareData) InitDefault() {
+	*p = SubscriptionPrepareData{}
+}
+
+var SubscriptionPrepareData_OrderDTO_DEFAULT *OrderDTO
+
+func (p *SubscriptionPrepareData) GetOrderDTO() (v *OrderDTO) {
+	if !p.IsSetOrderDTO() {
+		return SubscriptionPrepareData_OrderDTO_DEFAULT
+	}
+	return p.OrderDTO
+}
+
+func (p *SubscriptionPrepareData) GetThirdTransactionNo() (v string) {
+	return p.ThirdTransactionNo
+}
+
+func (p *SubscriptionPrepareData) GetNonceStr() (v string) {
+	return p.NonceStr
+}
+func (p *SubscriptionPrepareData) SetOrderDTO(val *OrderDTO) {
+	p.OrderDTO = val
+}
+func (p *SubscriptionPrepareData) SetThirdTransactionNo(val string) {
+	p.ThirdTransactionNo = val
+}
+func (p *SubscriptionPrepareData) SetNonceStr(val string) {
+	p.NonceStr = val
+}
+
+var fieldIDToName_SubscriptionPrepareData = map[int16]string{
+	1: "orderDTO",
+	2: "thirdTransactionNo",
+	3: "nonceStr",
+}
+
+func (p *SubscriptionPrepareData) IsSetOrderDTO() bool {
+	return p.OrderDTO != nil
+}
+
+func (p *SubscriptionPrepareData) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 3:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SubscriptionPrepareData[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *SubscriptionPrepareData) ReadField1(iprot thrift.TProtocol) error {
+	_field := NewOrderDTO()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.OrderDTO = _field
+	return nil
+}
+func (p *SubscriptionPrepareData) ReadField2(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.ThirdTransactionNo = _field
+	return nil
+}
+func (p *SubscriptionPrepareData) ReadField3(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.NonceStr = _field
+	return nil
+}
+
+func (p *SubscriptionPrepareData) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("SubscriptionPrepareData"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *SubscriptionPrepareData) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("orderDTO", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.OrderDTO.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *SubscriptionPrepareData) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("thirdTransactionNo", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.ThirdTransactionNo); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *SubscriptionPrepareData) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("nonceStr", thrift.STRING, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.NonceStr); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *SubscriptionPrepareData) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("SubscriptionPrepareData(%+v)", *p)
+
+}
+
+func (p *SubscriptionPrepareData) DeepEqual(ano *SubscriptionPrepareData) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.OrderDTO) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.ThirdTransactionNo) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.NonceStr) {
+		return false
+	}
+	return true
+}
+
+func (p *SubscriptionPrepareData) Field1DeepEqual(src *OrderDTO) bool {
+
+	if !p.OrderDTO.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+func (p *SubscriptionPrepareData) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.ThirdTransactionNo, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *SubscriptionPrepareData) Field3DeepEqual(src string) bool {
+
+	if strings.Compare(p.NonceStr, src) != 0 {
 		return false
 	}
 	return true

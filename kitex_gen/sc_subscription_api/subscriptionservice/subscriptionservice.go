@@ -20,6 +20,13 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
+	"SubscriptionPrepare": kitex.NewMethodInfo(
+		subscriptionPrepareHandler,
+		newSubscriptionServiceSubscriptionPrepareArgs,
+		newSubscriptionServiceSubscriptionPrepareResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
 }
 
 var (
@@ -104,6 +111,24 @@ func newSubscriptionServiceSubscriptionPageResult() interface{} {
 	return sc_subscription_api.NewSubscriptionServiceSubscriptionPageResult()
 }
 
+func subscriptionPrepareHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*sc_subscription_api.SubscriptionServiceSubscriptionPrepareArgs)
+	realResult := result.(*sc_subscription_api.SubscriptionServiceSubscriptionPrepareResult)
+	success, err := handler.(sc_subscription_api.SubscriptionService).SubscriptionPrepare(ctx, realArg.Request)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newSubscriptionServiceSubscriptionPrepareArgs() interface{} {
+	return sc_subscription_api.NewSubscriptionServiceSubscriptionPrepareArgs()
+}
+
+func newSubscriptionServiceSubscriptionPrepareResult() interface{} {
+	return sc_subscription_api.NewSubscriptionServiceSubscriptionPrepareResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -119,6 +144,16 @@ func (p *kClient) SubscriptionPage(ctx context.Context, request *sc_subscription
 	_args.Request = request
 	var _result sc_subscription_api.SubscriptionServiceSubscriptionPageResult
 	if err = p.c.Call(ctx, "SubscriptionPage", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) SubscriptionPrepare(ctx context.Context, request *sc_subscription_api.SubscriptionPrepareRequest) (r *sc_subscription_api.SubscriptionPrepareResponse, err error) {
+	var _args sc_subscription_api.SubscriptionServiceSubscriptionPrepareArgs
+	_args.Request = request
+	var _result sc_subscription_api.SubscriptionServiceSubscriptionPrepareResult
+	if err = p.c.Call(ctx, "SubscriptionPrepare", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
