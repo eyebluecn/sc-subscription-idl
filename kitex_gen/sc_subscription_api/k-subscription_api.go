@@ -779,6 +779,20 @@ func (p *SubscriptionPrepareRequest) FastRead(buf []byte) (int, error) {
 					goto SkipFieldError
 				}
 			}
+		case 3:
+			if fieldTypeId == thrift.I64 {
+				l, err = p.FastReadField3(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
 		case 255:
 			if fieldTypeId == thrift.STRUCT {
 				l, err = p.FastReadField255(buf[offset:])
@@ -856,6 +870,20 @@ func (p *SubscriptionPrepareRequest) FastReadField2(buf []byte) (int, error) {
 	return offset, nil
 }
 
+func (p *SubscriptionPrepareRequest) FastReadField3(buf []byte) (int, error) {
+	offset := 0
+
+	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+
+		p.ReaderId = v
+
+	}
+	return offset, nil
+}
+
 func (p *SubscriptionPrepareRequest) FastReadField255(buf []byte) (int, error) {
 	offset := 0
 
@@ -879,6 +907,7 @@ func (p *SubscriptionPrepareRequest) FastWriteNocopy(buf []byte, binaryWriter bt
 	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "SubscriptionPrepareRequest")
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
+		offset += p.fastWriteField3(buf[offset:], binaryWriter)
 		offset += p.fastWriteField2(buf[offset:], binaryWriter)
 		offset += p.fastWriteField255(buf[offset:], binaryWriter)
 	}
@@ -893,6 +922,7 @@ func (p *SubscriptionPrepareRequest) BLength() int {
 	if p != nil {
 		l += p.field1Length()
 		l += p.field2Length()
+		l += p.field3Length()
 		l += p.field255Length()
 	}
 	l += bthrift.Binary.FieldStopLength()
@@ -913,6 +943,15 @@ func (p *SubscriptionPrepareRequest) fastWriteField2(buf []byte, binaryWriter bt
 	offset := 0
 	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "payMethod", thrift.STRING, 2)
 	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.PayMethod)
+
+	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	return offset
+}
+
+func (p *SubscriptionPrepareRequest) fastWriteField3(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+	offset := 0
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "readerId", thrift.I64, 3)
+	offset += bthrift.Binary.WriteI64(buf[offset:], p.ReaderId)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -941,6 +980,15 @@ func (p *SubscriptionPrepareRequest) field2Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("payMethod", thrift.STRING, 2)
 	l += bthrift.Binary.StringLengthNocopy(p.PayMethod)
+
+	l += bthrift.Binary.FieldEndLength()
+	return l
+}
+
+func (p *SubscriptionPrepareRequest) field3Length() int {
+	l := 0
+	l += bthrift.Binary.FieldBeginLength("readerId", thrift.I64, 3)
+	l += bthrift.Binary.I64Length(p.ReaderId)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l

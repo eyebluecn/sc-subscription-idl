@@ -943,6 +943,7 @@ func (p *SubscriptionPageResponse) Field255DeepEqual(src *sc_subscription_base.B
 type SubscriptionPrepareRequest struct {
 	ColumnId  int64                      `thrift:"columnId,1" frugal:"1,default,i64" json:"columnId"`
 	PayMethod string                     `thrift:"payMethod,2" frugal:"2,default,string" json:"payMethod"`
+	ReaderId  int64                      `thrift:"readerId,3" frugal:"3,default,i64" json:"readerId"`
 	Base      *sc_subscription_base.Base `thrift:"base,255,optional" frugal:"255,optional,sc_subscription_base.Base" json:"base,omitempty"`
 }
 
@@ -962,6 +963,10 @@ func (p *SubscriptionPrepareRequest) GetPayMethod() (v string) {
 	return p.PayMethod
 }
 
+func (p *SubscriptionPrepareRequest) GetReaderId() (v int64) {
+	return p.ReaderId
+}
+
 var SubscriptionPrepareRequest_Base_DEFAULT *sc_subscription_base.Base
 
 func (p *SubscriptionPrepareRequest) GetBase() (v *sc_subscription_base.Base) {
@@ -976,6 +981,9 @@ func (p *SubscriptionPrepareRequest) SetColumnId(val int64) {
 func (p *SubscriptionPrepareRequest) SetPayMethod(val string) {
 	p.PayMethod = val
 }
+func (p *SubscriptionPrepareRequest) SetReaderId(val int64) {
+	p.ReaderId = val
+}
 func (p *SubscriptionPrepareRequest) SetBase(val *sc_subscription_base.Base) {
 	p.Base = val
 }
@@ -983,6 +991,7 @@ func (p *SubscriptionPrepareRequest) SetBase(val *sc_subscription_base.Base) {
 var fieldIDToName_SubscriptionPrepareRequest = map[int16]string{
 	1:   "columnId",
 	2:   "payMethod",
+	3:   "readerId",
 	255: "base",
 }
 
@@ -1020,6 +1029,14 @@ func (p *SubscriptionPrepareRequest) Read(iprot thrift.TProtocol) (err error) {
 		case 2:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 3:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -1084,6 +1101,17 @@ func (p *SubscriptionPrepareRequest) ReadField2(iprot thrift.TProtocol) error {
 	p.PayMethod = _field
 	return nil
 }
+func (p *SubscriptionPrepareRequest) ReadField3(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.ReaderId = _field
+	return nil
+}
 func (p *SubscriptionPrepareRequest) ReadField255(iprot thrift.TProtocol) error {
 	_field := sc_subscription_base.NewBase()
 	if err := _field.Read(iprot); err != nil {
@@ -1105,6 +1133,10 @@ func (p *SubscriptionPrepareRequest) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField2(oprot); err != nil {
 			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
 			goto WriteFieldError
 		}
 		if err = p.writeField255(oprot); err != nil {
@@ -1163,6 +1195,23 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
+func (p *SubscriptionPrepareRequest) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("readerId", thrift.I64, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.ReaderId); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
 func (p *SubscriptionPrepareRequest) writeField255(oprot thrift.TProtocol) (err error) {
 	if p.IsSetBase() {
 		if err = oprot.WriteFieldBegin("base", thrift.STRUCT, 255); err != nil {
@@ -1202,6 +1251,9 @@ func (p *SubscriptionPrepareRequest) DeepEqual(ano *SubscriptionPrepareRequest) 
 	if !p.Field2DeepEqual(ano.PayMethod) {
 		return false
 	}
+	if !p.Field3DeepEqual(ano.ReaderId) {
+		return false
+	}
 	if !p.Field255DeepEqual(ano.Base) {
 		return false
 	}
@@ -1218,6 +1270,13 @@ func (p *SubscriptionPrepareRequest) Field1DeepEqual(src int64) bool {
 func (p *SubscriptionPrepareRequest) Field2DeepEqual(src string) bool {
 
 	if strings.Compare(p.PayMethod, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *SubscriptionPrepareRequest) Field3DeepEqual(src int64) bool {
+
+	if p.ReaderId != src {
 		return false
 	}
 	return true

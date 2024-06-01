@@ -30,6 +30,7 @@ struct SubscriptionPageResponse {
 struct SubscriptionPrepareRequest {
 	1: i64 columnId //专栏
 	2: string payMethod //支付方式
+	3: i64 readerId //当前操作的读者id
 
 	255: optional base.Base base //标准请求内容
 }
