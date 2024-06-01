@@ -27,6 +27,13 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
+	"MqMessageArrive": kitex.NewMethodInfo(
+		mqMessageArriveHandler,
+		newSubscriptionServiceMqMessageArriveArgs,
+		newSubscriptionServiceMqMessageArriveResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
 }
 
 var (
@@ -129,6 +136,24 @@ func newSubscriptionServiceSubscriptionPrepareResult() interface{} {
 	return sc_subscription_api.NewSubscriptionServiceSubscriptionPrepareResult()
 }
 
+func mqMessageArriveHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*sc_subscription_api.SubscriptionServiceMqMessageArriveArgs)
+	realResult := result.(*sc_subscription_api.SubscriptionServiceMqMessageArriveResult)
+	success, err := handler.(sc_subscription_api.SubscriptionService).MqMessageArrive(ctx, realArg.Request)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newSubscriptionServiceMqMessageArriveArgs() interface{} {
+	return sc_subscription_api.NewSubscriptionServiceMqMessageArriveArgs()
+}
+
+func newSubscriptionServiceMqMessageArriveResult() interface{} {
+	return sc_subscription_api.NewSubscriptionServiceMqMessageArriveResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -154,6 +179,16 @@ func (p *kClient) SubscriptionPrepare(ctx context.Context, request *sc_subscript
 	_args.Request = request
 	var _result sc_subscription_api.SubscriptionServiceSubscriptionPrepareResult
 	if err = p.c.Call(ctx, "SubscriptionPrepare", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) MqMessageArrive(ctx context.Context, request *sc_subscription_api.MqMessageArriveRequest) (r *sc_subscription_api.MqMessageArriveResponse, err error) {
+	var _args sc_subscription_api.SubscriptionServiceMqMessageArriveArgs
+	_args.Request = request
+	var _result sc_subscription_api.SubscriptionServiceMqMessageArriveResult
+	if err = p.c.Call(ctx, "MqMessageArrive", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

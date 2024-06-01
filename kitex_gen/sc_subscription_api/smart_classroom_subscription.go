@@ -12,6 +12,8 @@ type SubscriptionService interface {
 	SubscriptionPage(ctx context.Context, request *SubscriptionPageRequest) (r *SubscriptionPageResponse, err error)
 
 	SubscriptionPrepare(ctx context.Context, request *SubscriptionPrepareRequest) (r *SubscriptionPrepareResponse, err error)
+
+	MqMessageArrive(ctx context.Context, request *MqMessageArriveRequest) (r *MqMessageArriveResponse, err error)
 }
 
 type SubscriptionServiceClient struct {
@@ -58,6 +60,15 @@ func (p *SubscriptionServiceClient) SubscriptionPrepare(ctx context.Context, req
 	}
 	return _result.GetSuccess(), nil
 }
+func (p *SubscriptionServiceClient) MqMessageArrive(ctx context.Context, request *MqMessageArriveRequest) (r *MqMessageArriveResponse, err error) {
+	var _args SubscriptionServiceMqMessageArriveArgs
+	_args.Request = request
+	var _result SubscriptionServiceMqMessageArriveResult
+	if err = p.Client_().Call(ctx, "MqMessageArrive", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
 
 type SubscriptionServiceProcessor struct {
 	processorMap map[string]thrift.TProcessorFunction
@@ -81,6 +92,7 @@ func NewSubscriptionServiceProcessor(handler SubscriptionService) *SubscriptionS
 	self := &SubscriptionServiceProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
 	self.AddToProcessorMap("SubscriptionPage", &subscriptionServiceProcessorSubscriptionPage{handler: handler})
 	self.AddToProcessorMap("SubscriptionPrepare", &subscriptionServiceProcessorSubscriptionPrepare{handler: handler})
+	self.AddToProcessorMap("MqMessageArrive", &subscriptionServiceProcessorMqMessageArrive{handler: handler})
 	return self
 }
 func (p *SubscriptionServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -180,6 +192,54 @@ func (p *subscriptionServiceProcessorSubscriptionPrepare) Process(ctx context.Co
 		result.Success = retval
 	}
 	if err2 = oprot.WriteMessageBegin("SubscriptionPrepare", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
+type subscriptionServiceProcessorMqMessageArrive struct {
+	handler SubscriptionService
+}
+
+func (p *subscriptionServiceProcessorMqMessageArrive) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := SubscriptionServiceMqMessageArriveArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("MqMessageArrive", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := SubscriptionServiceMqMessageArriveResult{}
+	var retval *MqMessageArriveResponse
+	if retval, err2 = p.handler.MqMessageArrive(ctx, args.Request); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing MqMessageArrive: "+err2.Error())
+		oprot.WriteMessageBegin("MqMessageArrive", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("MqMessageArrive", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -874,6 +934,348 @@ func (p *SubscriptionServiceSubscriptionPrepareResult) DeepEqual(ano *Subscripti
 }
 
 func (p *SubscriptionServiceSubscriptionPrepareResult) Field0DeepEqual(src *SubscriptionPrepareResponse) bool {
+
+	if !p.Success.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type SubscriptionServiceMqMessageArriveArgs struct {
+	Request *MqMessageArriveRequest `thrift:"request,1" frugal:"1,default,MqMessageArriveRequest" json:"request"`
+}
+
+func NewSubscriptionServiceMqMessageArriveArgs() *SubscriptionServiceMqMessageArriveArgs {
+	return &SubscriptionServiceMqMessageArriveArgs{}
+}
+
+func (p *SubscriptionServiceMqMessageArriveArgs) InitDefault() {
+	*p = SubscriptionServiceMqMessageArriveArgs{}
+}
+
+var SubscriptionServiceMqMessageArriveArgs_Request_DEFAULT *MqMessageArriveRequest
+
+func (p *SubscriptionServiceMqMessageArriveArgs) GetRequest() (v *MqMessageArriveRequest) {
+	if !p.IsSetRequest() {
+		return SubscriptionServiceMqMessageArriveArgs_Request_DEFAULT
+	}
+	return p.Request
+}
+func (p *SubscriptionServiceMqMessageArriveArgs) SetRequest(val *MqMessageArriveRequest) {
+	p.Request = val
+}
+
+var fieldIDToName_SubscriptionServiceMqMessageArriveArgs = map[int16]string{
+	1: "request",
+}
+
+func (p *SubscriptionServiceMqMessageArriveArgs) IsSetRequest() bool {
+	return p.Request != nil
+}
+
+func (p *SubscriptionServiceMqMessageArriveArgs) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SubscriptionServiceMqMessageArriveArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *SubscriptionServiceMqMessageArriveArgs) ReadField1(iprot thrift.TProtocol) error {
+	_field := NewMqMessageArriveRequest()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Request = _field
+	return nil
+}
+
+func (p *SubscriptionServiceMqMessageArriveArgs) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("MqMessageArrive_args"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *SubscriptionServiceMqMessageArriveArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("request", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Request.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *SubscriptionServiceMqMessageArriveArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("SubscriptionServiceMqMessageArriveArgs(%+v)", *p)
+
+}
+
+func (p *SubscriptionServiceMqMessageArriveArgs) DeepEqual(ano *SubscriptionServiceMqMessageArriveArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Request) {
+		return false
+	}
+	return true
+}
+
+func (p *SubscriptionServiceMqMessageArriveArgs) Field1DeepEqual(src *MqMessageArriveRequest) bool {
+
+	if !p.Request.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type SubscriptionServiceMqMessageArriveResult struct {
+	Success *MqMessageArriveResponse `thrift:"success,0,optional" frugal:"0,optional,MqMessageArriveResponse" json:"success,omitempty"`
+}
+
+func NewSubscriptionServiceMqMessageArriveResult() *SubscriptionServiceMqMessageArriveResult {
+	return &SubscriptionServiceMqMessageArriveResult{}
+}
+
+func (p *SubscriptionServiceMqMessageArriveResult) InitDefault() {
+	*p = SubscriptionServiceMqMessageArriveResult{}
+}
+
+var SubscriptionServiceMqMessageArriveResult_Success_DEFAULT *MqMessageArriveResponse
+
+func (p *SubscriptionServiceMqMessageArriveResult) GetSuccess() (v *MqMessageArriveResponse) {
+	if !p.IsSetSuccess() {
+		return SubscriptionServiceMqMessageArriveResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *SubscriptionServiceMqMessageArriveResult) SetSuccess(x interface{}) {
+	p.Success = x.(*MqMessageArriveResponse)
+}
+
+var fieldIDToName_SubscriptionServiceMqMessageArriveResult = map[int16]string{
+	0: "success",
+}
+
+func (p *SubscriptionServiceMqMessageArriveResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *SubscriptionServiceMqMessageArriveResult) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 0:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField0(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SubscriptionServiceMqMessageArriveResult[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *SubscriptionServiceMqMessageArriveResult) ReadField0(iprot thrift.TProtocol) error {
+	_field := NewMqMessageArriveResponse()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Success = _field
+	return nil
+}
+
+func (p *SubscriptionServiceMqMessageArriveResult) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("MqMessageArrive_result"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField0(oprot); err != nil {
+			fieldId = 0
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *SubscriptionServiceMqMessageArriveResult) writeField0(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccess() {
+		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Success.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
+}
+
+func (p *SubscriptionServiceMqMessageArriveResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("SubscriptionServiceMqMessageArriveResult(%+v)", *p)
+
+}
+
+func (p *SubscriptionServiceMqMessageArriveResult) DeepEqual(ano *SubscriptionServiceMqMessageArriveResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *SubscriptionServiceMqMessageArriveResult) Field0DeepEqual(src *MqMessageArriveResponse) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false

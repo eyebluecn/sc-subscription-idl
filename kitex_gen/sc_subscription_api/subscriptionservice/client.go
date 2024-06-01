@@ -13,6 +13,7 @@ import (
 type Client interface {
 	SubscriptionPage(ctx context.Context, request *sc_subscription_api.SubscriptionPageRequest, callOptions ...callopt.Option) (r *sc_subscription_api.SubscriptionPageResponse, err error)
 	SubscriptionPrepare(ctx context.Context, request *sc_subscription_api.SubscriptionPrepareRequest, callOptions ...callopt.Option) (r *sc_subscription_api.SubscriptionPrepareResponse, err error)
+	MqMessageArrive(ctx context.Context, request *sc_subscription_api.MqMessageArriveRequest, callOptions ...callopt.Option) (r *sc_subscription_api.MqMessageArriveResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -52,4 +53,9 @@ func (p *kSubscriptionServiceClient) SubscriptionPage(ctx context.Context, reque
 func (p *kSubscriptionServiceClient) SubscriptionPrepare(ctx context.Context, request *sc_subscription_api.SubscriptionPrepareRequest, callOptions ...callopt.Option) (r *sc_subscription_api.SubscriptionPrepareResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.SubscriptionPrepare(ctx, request)
+}
+
+func (p *kSubscriptionServiceClient) MqMessageArrive(ctx context.Context, request *sc_subscription_api.MqMessageArriveRequest, callOptions ...callopt.Option) (r *sc_subscription_api.MqMessageArriveResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.MqMessageArrive(ctx, request)
 }
