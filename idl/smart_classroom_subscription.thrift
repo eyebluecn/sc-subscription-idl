@@ -1,4 +1,5 @@
 include "./subscription/subscription_api.thrift"
+include "./rich/rich_api.thrift"
 include "./mq/mq_api.thrift"
 namespace go sc_subscription_api
 
@@ -7,6 +8,9 @@ service SubscriptionService {
 
     //查询订阅列表
     subscription_api.SubscriptionPageResponse SubscriptionPage(1: subscription_api.SubscriptionPageRequest request)
+
+    //查询订阅富列表
+    rich_api.SubscriptionRichPageResponse SubscriptionRichPage(1: rich_api.SubscriptionRichPageRequest request)
 
     //准备订阅
     subscription_api.SubscriptionPrepareResponse SubscriptionPrepare(1: subscription_api.SubscriptionPrepareRequest request)

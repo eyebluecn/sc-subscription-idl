@@ -12,6 +12,7 @@ import (
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
 	SubscriptionPage(ctx context.Context, request *sc_subscription_api.SubscriptionPageRequest, callOptions ...callopt.Option) (r *sc_subscription_api.SubscriptionPageResponse, err error)
+	SubscriptionRichPage(ctx context.Context, request *sc_subscription_api.SubscriptionRichPageRequest, callOptions ...callopt.Option) (r *sc_subscription_api.SubscriptionRichPageResponse, err error)
 	SubscriptionPrepare(ctx context.Context, request *sc_subscription_api.SubscriptionPrepareRequest, callOptions ...callopt.Option) (r *sc_subscription_api.SubscriptionPrepareResponse, err error)
 	MqMessageArrive(ctx context.Context, request *sc_subscription_api.MqMessageArriveRequest, callOptions ...callopt.Option) (r *sc_subscription_api.MqMessageArriveResponse, err error)
 }
@@ -48,6 +49,11 @@ type kSubscriptionServiceClient struct {
 func (p *kSubscriptionServiceClient) SubscriptionPage(ctx context.Context, request *sc_subscription_api.SubscriptionPageRequest, callOptions ...callopt.Option) (r *sc_subscription_api.SubscriptionPageResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.SubscriptionPage(ctx, request)
+}
+
+func (p *kSubscriptionServiceClient) SubscriptionRichPage(ctx context.Context, request *sc_subscription_api.SubscriptionRichPageRequest, callOptions ...callopt.Option) (r *sc_subscription_api.SubscriptionRichPageResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.SubscriptionRichPage(ctx, request)
 }
 
 func (p *kSubscriptionServiceClient) SubscriptionPrepare(ctx context.Context, request *sc_subscription_api.SubscriptionPrepareRequest, callOptions ...callopt.Option) (r *sc_subscription_api.SubscriptionPrepareResponse, err error) {

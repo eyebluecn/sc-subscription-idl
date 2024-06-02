@@ -20,6 +20,13 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
+	"SubscriptionRichPage": kitex.NewMethodInfo(
+		subscriptionRichPageHandler,
+		newSubscriptionServiceSubscriptionRichPageArgs,
+		newSubscriptionServiceSubscriptionRichPageResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
 	"SubscriptionPrepare": kitex.NewMethodInfo(
 		subscriptionPrepareHandler,
 		newSubscriptionServiceSubscriptionPrepareArgs,
@@ -118,6 +125,24 @@ func newSubscriptionServiceSubscriptionPageResult() interface{} {
 	return sc_subscription_api.NewSubscriptionServiceSubscriptionPageResult()
 }
 
+func subscriptionRichPageHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*sc_subscription_api.SubscriptionServiceSubscriptionRichPageArgs)
+	realResult := result.(*sc_subscription_api.SubscriptionServiceSubscriptionRichPageResult)
+	success, err := handler.(sc_subscription_api.SubscriptionService).SubscriptionRichPage(ctx, realArg.Request)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newSubscriptionServiceSubscriptionRichPageArgs() interface{} {
+	return sc_subscription_api.NewSubscriptionServiceSubscriptionRichPageArgs()
+}
+
+func newSubscriptionServiceSubscriptionRichPageResult() interface{} {
+	return sc_subscription_api.NewSubscriptionServiceSubscriptionRichPageResult()
+}
+
 func subscriptionPrepareHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*sc_subscription_api.SubscriptionServiceSubscriptionPrepareArgs)
 	realResult := result.(*sc_subscription_api.SubscriptionServiceSubscriptionPrepareResult)
@@ -169,6 +194,16 @@ func (p *kClient) SubscriptionPage(ctx context.Context, request *sc_subscription
 	_args.Request = request
 	var _result sc_subscription_api.SubscriptionServiceSubscriptionPageResult
 	if err = p.c.Call(ctx, "SubscriptionPage", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) SubscriptionRichPage(ctx context.Context, request *sc_subscription_api.SubscriptionRichPageRequest) (r *sc_subscription_api.SubscriptionRichPageResponse, err error) {
+	var _args sc_subscription_api.SubscriptionServiceSubscriptionRichPageArgs
+	_args.Request = request
+	var _result sc_subscription_api.SubscriptionServiceSubscriptionRichPageResult
+	if err = p.c.Call(ctx, "SubscriptionRichPage", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
